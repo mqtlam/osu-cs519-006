@@ -27,11 +27,19 @@ reset_environment() {
 }
 
 create_virtualenv() {
-	virtualenv -p /usr/bin/python2.7 --no-site-packages $VIRTUALENV_DIR
+	virtualenv --no-site-packages -p /usr/bin/python2.7 $VIRTUALENV_DIR
+}
+
+save_dependencies_list() {
+	rm -f $REQUIREMENTS_FILE
+	pip freeze > $REQUIREMENTS_FILE
 }
 
 install_dependencies() {
 	pip install numpy
+	pip install scipy
+
+	save_dependencies_list
 }
 
 install_dependencies_from_requirements() {
@@ -53,8 +61,9 @@ main() {
 
 	echo
 	echo "[${SCRIPT_NAME}] Installing dependencies..."
-	# install_dependencies_from_requirements
 	install_dependencies
+	# alternatively, install from requirements.txt:
+	# install_dependencies_from_requirements
 
 	echo
 	echo "[${SCRIPT_NAME}] Extracting dataset..."

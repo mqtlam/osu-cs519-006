@@ -18,6 +18,7 @@ See requirements.txt for complete list.
 		layer.py			abstract layer
 		linear.py			linear layer (W*x+b)
 		relu.py				RELU activation layer
+		sigmoid.py			sigmoid layer
 		soft_max.py			soft max layer
 		cross_entropy.py		cross entropy loss layer
 	test/				simple unit tests
