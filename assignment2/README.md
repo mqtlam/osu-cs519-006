@@ -21,6 +21,8 @@ See requirements.txt for complete list.
 		sigmoid.py			sigmoid layer
 		soft_max.py			soft max layer
 		cross_entropy.py		cross entropy loss layer
+	network/			network container types
+		sequential.py			sequential network container
 	test/				simple unit tests
 	util/				Python utilities for learning and inference
 		benchmark.py			benchmarking tools
