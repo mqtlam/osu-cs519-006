@@ -7,7 +7,9 @@ This is assignment #2 for the deep learning class CS 519-006 winter 2016.
 This assignment implements a one hidden layer fully connected neural network in python (from scratch).
 
 ## Dependencies
+- Python 3
 - numpy 
+- scipy 
 
 See requirements.txt for complete list.
 
@@ -37,4 +39,4 @@ See requirements.txt for complete list.
 ## Quick Start
 Set up the python virtual environment and extract dataset using `./bootstrap.sh cifar-2class-py.zip`
 
-Run `main.py`
+Run `main.py` for training and test
