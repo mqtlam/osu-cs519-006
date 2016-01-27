@@ -1,9 +1,9 @@
 class Layer:
-	def __init__():
+	def __init__(self):
 		pass
 
-	def forward(x):
+	def forward(self, x):
 		pass
 
-	def backward(x):
+	def backward(self, x):
 		pass

@@ -1,12 +1,14 @@
 import numpy as np
-from layers.layer import Layer
+from layers.core import Layer
 
 class LinearLayer(Layer):
-	def __init__():
-		pass
+	def __init__(self, shape):
+		self.mu = 0
+		self.sigma = 1
+		self.W = np.random.normal(self.mu, self.sigma, shape)
 
-	def forward(x):
-		return np.dot(W, x)
+	def forward(self, x):
+		return np.dot(self.W, x)
 
-	def backward(x):
+	def backward(self, x):
 		pass

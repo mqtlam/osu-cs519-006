@@ -1,13 +1,13 @@
 from scipy.special import expit
-from layers.layer import Layer
+from layers.core import Layer
 
 class SigmoidLayer(Layer):
-	def __init__():
+	def __init__(self):
 		pass
 
-	def forward(x):
+	def forward(self, x):
 		# expit is sigmoid
 		return expit(x)
 
-	def backward(x):
+	def backward(self, x):
 		return expit(x)*(1-expit(x))
