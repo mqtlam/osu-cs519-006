@@ -11,6 +11,6 @@ class DatasetLoader:
 		return data
 
 	@staticmethod
-	def save_cifar(data, dataset_path, protcol=3):
+	def save_cifar(data, dataset_path, protocol=3):
 		with open(dataset_path, 'wb') as f:
-			pickle.save(data, f, protocol)
+			pickle.dump(data, f, protocol)
