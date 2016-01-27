@@ -60,3 +60,8 @@ target/
 
 #Ipython Notebook
 .ipynb_checkpoints
+
+# Other
+assignment*/data
+assignment*/venv
+*.swp
