@@ -1,4 +1,4 @@
-import math
+import numpy as np
 
 class Sequential:
 	def __init__(self):
@@ -12,15 +12,18 @@ class Sequential:
 
 	def add(self, layer):
 		self.graph.append(layer)
+		# print "Added layer: [{0}] {1}".format(len(self.graph)-1, layer)
 
 	def remove(self, index=None):
 		if index is None:
 			self.graph.pop()
 		else:
 			self.graph.pop(index)
+		# print "Removed layer from end: {0}".format(layer)
 
-	def insert(self, index):
-		self.graph.insert(index)
+	def insert(self, layer, index):
+		self.graph.insert(layer, index)
+		# print "Inserted layer: [{0}] {1}".format(index, layer)
 
 	def forward(self, x):
 		z = x
@@ -29,15 +32,15 @@ class Sequential:
 		return z
 
 	def backward(self, x, grad):
-		log_g = math.log(grad)
+		log_g = np.log(grad)
 		for layer in reversed(self.graph):
-			g = math.exp(log_g)
+			g = np.exp(log_g)
 			result = layer.backward(x, g)
-			log_g = log_g + math.log(result)
-		return math.exp(log_g)
+			log_g = log_g + np.log(result)
+		return np.exp(log_g)
 
 	def __str__(self):
-		string = "Sequential Network: \n"
+		string = "Sequential Network: "
 		for index, layer in enumerate(self.graph):
-			string += "\t[{0}] {1}\n".format(index, layer)
+			string += "\n\t[{0}] {1}".format(index, layer)
 		return string

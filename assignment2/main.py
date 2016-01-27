@@ -31,4 +31,7 @@ print x
 print z
 
 # backward propagation test
-# TODO
+grad = np.random.rand(1)
+grad_x = net.backward(x, grad)
+
+print grad_x
