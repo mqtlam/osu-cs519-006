@@ -10,3 +10,7 @@ class ReluLayer(Layer):
 
 	def backward(self, x):
 		return 1 * (x > 0) + 0 * (x < 0) + np.random.uniform(0, 1, x.shape) * (x == 0)
+
+	def __str__(self):
+		string = "ReluLayer"
+		return string

@@ -11,3 +11,7 @@ class SigmoidLayer(Layer):
 
 	def backward(self, x):
 		return expit(x)*(1-expit(x))
+
+	def __str__(self):
+		string = "SigmoidLayer"
+		return string

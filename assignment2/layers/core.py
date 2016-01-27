@@ -7,3 +7,7 @@ class Layer:
 
 	def backward(self, x):
 		pass
+
+	def __str__(self):
+		string =  "Layer (abstract)"
+		return string

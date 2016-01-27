@@ -12,14 +12,16 @@ momentum = 0.1
 num_epoch = 25
 
 # variables
-input_dim = 10
+input_dim = 20
 
 # network
 net = Sequential()
-net.add( LinearLayer((num_hidden_units, input_dim)) )
+net.add( LinearLayer(input_dim, num_hidden_units) )
 net.add( ReluLayer() )
-net.add( LinearLayer((num_hidden_units,)) )
+net.add( LinearLayer(num_hidden_units, 1) )
 net.add( SigmoidLayer() )
+
+print net
 
 # test
 x = np.random.rand(input_dim)
