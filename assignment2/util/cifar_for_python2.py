@@ -2,6 +2,8 @@
 from data_loader import DatasetLoader
 
 def main():
+	"""Make sure this script is running in Python 3!"""
+
 	load_dataset_path = "../data/cifar_2class"
 	new_dataset_path = "../data/cifar_2class.protocol2"
 
