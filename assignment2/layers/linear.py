@@ -16,7 +16,7 @@ class LinearLayer(Layer):
 	def forward(self, x):
 		return np.dot(self.W, x)
 
-	def backward(self, x):
+	def backward(self, x, grad):
 		pass
 
 	def __str__(self):

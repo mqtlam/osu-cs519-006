@@ -9,7 +9,7 @@ class SigmoidLayer(Layer):
 		# expit is sigmoid
 		return expit(x)
 
-	def backward(self, x):
+	def backward(self, x, grad):
 		return expit(x)*(1-expit(x))
 
 	def __str__(self):

@@ -5,7 +5,7 @@ class Layer:
 	def forward(self, x):
 		pass
 
-	def backward(self, x):
+	def backward(self, x, grad):
 		pass
 
 	def __str__(self):

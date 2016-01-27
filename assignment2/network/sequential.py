@@ -1,3 +1,5 @@
+import math
+
 class Sequential:
 	def __init__(self):
 		self.graph = []
@@ -26,8 +28,13 @@ class Sequential:
 			z = layer.forward(z)
 		return z
 
-	def backward(self, x):
-		pass
+	def backward(self, x, grad):
+		log_g = math.log(grad)
+		for layer in reversed(self.graph):
+			g = math.exp(log_g)
+			result = layer.backward(x, g)
+			log_g = log_g + math.log(result)
+		return math.exp(log_g)
 
 	def __str__(self):
 		string = "Sequential Network: \n"

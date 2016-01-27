@@ -23,6 +23,12 @@ net.add( SigmoidLayer() )
 
 print net
 
-# test
+# forward propagation test
 x = np.random.rand(input_dim)
 z = net.forward(x)
+
+print x
+print z
+
+# backward propagation test
+# TODO
