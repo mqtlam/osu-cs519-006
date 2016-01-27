@@ -12,18 +12,18 @@ class Sequential:
 
 	def add(self, layer):
 		self.graph.append(layer)
-		# print "Added layer: [{0}] {1}".format(len(self.graph)-1, layer)
+		# print("Added layer: [{0}] {1}".format(len(self.graph)-1, layer))
 
 	def remove(self, index=None):
 		if index is None:
 			self.graph.pop()
 		else:
 			self.graph.pop(index)
-		# print "Removed layer from end: {0}".format(layer)
+		# print("Removed layer from end: {0}".format(layer))
 
 	def insert(self, layer, index):
 		self.graph.insert(layer, index)
-		# print "Inserted layer: [{0}] {1}".format(index, layer)
+		# print("Inserted layer: [{0}] {1}".format(index, layer))
 
 	def forward(self, x):
 		z = x

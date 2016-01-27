@@ -63,5 +63,6 @@ target/
 
 # Other
 assignment*/data
-assignment*/venv
+assignment*/*venv*
+*venv*
 *.swp

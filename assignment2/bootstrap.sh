@@ -6,6 +6,8 @@ readonly DATASET_FILE=$1
 readonly DATA_DIR="data"
 readonly VIRTUALENV_DIR="venv"
 readonly REQUIREMENTS_FILE="requirements.txt"
+# readonly PYTHON_BIN="/usr/bin/python2.7"
+readonly PYTHON_BIN="/usr/bin/python3"
 
 usage() {
 	echo "usage: $SCRIPT_NAME /path/to/cifar-2class-py.zip"
@@ -27,7 +29,7 @@ reset_environment() {
 }
 
 create_virtualenv() {
-	virtualenv --no-site-packages -p /usr/bin/python2.7 $VIRTUALENV_DIR
+	virtualenv --no-site-packages -p $PYTHON_BIN $VIRTUALENV_DIR
 }
 
 save_dependencies_list() {
