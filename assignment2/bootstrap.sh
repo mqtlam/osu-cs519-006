@@ -5,9 +5,10 @@ readonly DATASET_FILE=$1
 
 readonly DATA_DIR="data"
 readonly VIRTUALENV_DIR="venv"
+# readonly VIRTUALENV_DIR="venv3"
 readonly REQUIREMENTS_FILE="requirements.txt"
-# readonly PYTHON_BIN="/usr/bin/python2.7"
-readonly PYTHON_BIN="/usr/bin/python3"
+readonly PYTHON_BIN="/usr/bin/python2.7"
+# readonly PYTHON_BIN="/usr/bin/python3"
 
 usage() {
 	echo "usage: $SCRIPT_NAME /path/to/cifar-2class-py.zip"
@@ -40,6 +41,7 @@ save_dependencies_list() {
 install_dependencies() {
 	pip install numpy
 	pip install scipy
+	pip install ipython
 
 	save_dependencies_list
 }
