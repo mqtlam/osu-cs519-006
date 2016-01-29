@@ -1,5 +1,6 @@
 import numpy as np
 from layers.relu import ReluLayer
+from layers.sigmoid import SigmoidLayer
 from layers.soft_max import SoftMaxLayer
 from layers.linear import LinearLayer
 from network.sequential import Sequential
@@ -26,10 +27,11 @@ momentum = 0.1
 num_epoch = 25
 
 # network
-net = Sequential()
+net = Sequential(debug=True)
 net.add( LinearLayer(input_dim, num_hidden_units) )
 net.add( ReluLayer() )
 net.add( LinearLayer(num_hidden_units, 2) )
+# net.add( SigmoidLayer() )
 net.add( SoftMaxLayer() )
 
 print("{0}\n".format(net))
@@ -40,8 +42,9 @@ loss = CrossEntropyLoss()
 print("Loss function: {0}\n".format(loss))
 
 # forward propagation test
-target = 0
-x = np.random.rand(input_dim)
+train_image_index = 0
+target = data.get_train_labels()[train_image_index, 0]
+x = data.get_train_data()[0]
 z = net.forward(x)
 l = loss.forward(z, target)
 
