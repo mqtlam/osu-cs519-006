@@ -1,6 +1,6 @@
 import numpy as np
+from tqdm import tqdm
 from layers.relu import ReluLayer
-from layers.sigmoid import SigmoidLayer
 from layers.soft_max import SoftMaxLayer
 from layers.linear import LinearLayer
 from network.sequential import Sequential
@@ -26,12 +26,13 @@ mini_batch_size = 256
 momentum = 0.1
 num_epoch = 25
 
+num_batches = num_training // mini_batch_size
+
 # network
 net = Sequential(debug=True)
 net.add( LinearLayer(input_dim, num_hidden_units) )
 net.add( ReluLayer() )
 net.add( LinearLayer(num_hidden_units, 2) )
-# net.add( SigmoidLayer() )
 net.add( SoftMaxLayer() )
 
 print("{0}\n".format(net))
@@ -57,3 +58,32 @@ gradients = loss.backward(z, target)
 grad_x = net.backward(x, gradients)
 
 print("input gradient={0}".format(grad_x))
+
+# # training loop
+# for epoch in range(num_epoch):
+# 	print("Training epoch {0}...".format(epoch))
+# 	# training
+# 	for batch in tqdm(range(num_batches)):
+# 		# get batch
+# 		train_image_index = 0
+# 		target = data.get_train_labels()[train_image_index, 0]
+# 		x = data.get_train_data()[0]
+# 
+# 		# forward
+# 		z = net.forward(x)
+# 		l = loss.forward(z, target)
+# 
+# 		# backward
+# 		gradients = loss.backward(z, target)
+# 		grad_x = net.backward(x, gradients)
+# 
+# 		# update
+# 
+# 	# evaluation
+# 	test_image_index = 0
+# 	target = data.get_test_labels()[test_image_index, 0]
+# 	x = data.get_test_data()[0]
+# 
+# 	z = net.forward(x)
+# 	l = loss.forward(z, target)
+# 	print("Evaluation: {0}".format(l))

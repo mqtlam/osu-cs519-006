@@ -31,7 +31,7 @@ class Sequential:
 
 	def forward(self, x):
 		self.__debug_print__("[forward] Running forward pass...\n")
-		self.__debug_print__("[forward] Input={0}\n".format(x))
+		self.__debug_print__("[forward] Initial Input={0}\n".format(x))
 
 		z = x
 		for index, layer in enumerate(self.graph):
@@ -42,15 +42,15 @@ class Sequential:
 
 			self.__debug_print__("[forward] Output=\n\t\t{0}\n".format(z))
 
-		self.__debug_print__("[forward] Output={0}\n".format(z))
+		self.__debug_print__("[forward] Final Output={0}\n".format(z))
 		self.__debug_print__("[forward] Done with forward pass.")
 
 		return z
 
 	def backward(self, x, grad):
 		self.__debug_print__("[backward] Running backward pass...\n")
-		self.__debug_print__("[backward] Input x={0}\n".format(x))
-		self.__debug_print__("[backward] Input grad={0}\n".format(grad))
+		self.__debug_print__("[backward] Initial Input x={0}\n".format(x))
+		self.__debug_print__("[backward] Initial Input grad={0}\n".format(grad))
 
 		log_g = np.log(grad)
 		for index, layer in enumerate(reversed(self.graph)):
@@ -66,7 +66,7 @@ class Sequential:
 			log_g = log_g + np.log(result)
 
 		result = np.exp(log_g)
-		self.__debug_print__("[backward] Output={0}\n".format(result))
+		self.__debug_print__("[backward] Final Output={0}\n".format(result))
 		self.__debug_print__("[backward] Done with backward pass.")
 
 		return result

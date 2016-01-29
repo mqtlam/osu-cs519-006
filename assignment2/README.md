@@ -10,6 +10,7 @@ This assignment implements a one hidden layer fully connected neural network in 
 - Python 3
 - numpy 
 - scipy 
+- tqdm
 
 See requirements.txt for complete list.
 

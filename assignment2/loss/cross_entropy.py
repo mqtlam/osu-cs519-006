@@ -6,11 +6,12 @@ class CrossEntropyLoss(Loss):
 		pass
 
 	def forward(self, output, target):
-		# return -1.*np.log(np.exp(output[target]) / (np.sum(np.exp(output)))
-		return -output[target] + np.log(np.sum(np.exp(output)))
+		return -np.log(output[target])
 
 	def backward(self, output, target):
-		return 0.1 # TODO
+		gradInput = np.zeros(output.shape)
+		gradInput[target] = -1./output[target]
+		return gradInput
 
 	def __str__(self):
 		string = "CrossEntropyLoss"

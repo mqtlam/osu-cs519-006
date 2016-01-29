@@ -41,6 +41,7 @@ save_dependencies_list() {
 install_dependencies() {
 	pip install numpy
 	pip install scipy
+	pip install tqdm
 	pip install ipython
 
 	save_dependencies_list

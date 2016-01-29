@@ -2,12 +2,15 @@ import numpy as np
 from layers.core import Layer
 
 class LinearLayer(Layer):
-	def __init__(self, input_dim, output_dim):
+	DEFAULT_INITIAL_MU = 0
+	DEFAULT_INITIAL_SIGMA = 0.1
+
+	def __init__(self, input_dim, output_dim, **kwargs):
 		self.input_dim = input_dim
 		self.output_dim = output_dim
 
-		self.mu = 0
-		self.sigma = 1
+		self.mu = kwargs["mu"] if "mu" in kwargs else LinearLayer.DEFAULT_INITIAL_MU
+		self.sigma = kwargs["sigma"] if "sigma" in kwargs else LinearLayer.DEFAULT_INITIAL_SIGMA
 
 		if output_dim == 1:
 			shape = (input_dim,)
