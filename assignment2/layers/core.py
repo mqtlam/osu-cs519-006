@@ -1,6 +1,6 @@
 class Layer:
 	def __init__(self):
-		pass
+		self.output = None
 
 	def forward(self, x):
 		pass

@@ -52,10 +52,8 @@ class Sequential:
 		self.__debug_print__("[backward] Initial Input x={0}\n".format(x))
 		self.__debug_print__("[backward] Initial Input grad={0}\n".format(grad))
 
-		log_g = np.log(grad)
+		g = grad
 		for index, layer in enumerate(reversed(self.graph)):
-			g = np.exp(log_g)
-
 			self.__debug_print__("[backward] [{0}] {1}".format(index, layer))
 			self.__debug_print__("[backward] Input=\n\t\t{0}".format(g))
 
@@ -63,13 +61,12 @@ class Sequential:
 
 			self.__debug_print__("[backward] Output=\n\t\t{0}\n".format(result))
 
-			log_g = log_g + np.log(result)
+			g = result
 
-		result = np.exp(log_g)
-		self.__debug_print__("[backward] Final Output={0}\n".format(result))
+		self.__debug_print__("[backward] Final Output={0}\n".format(g))
 		self.__debug_print__("[backward] Done with backward pass.")
 
-		return result
+		return g
 
 	def __str__(self):
 		string = "Sequential Network: "

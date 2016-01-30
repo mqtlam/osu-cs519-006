@@ -3,14 +3,21 @@ from layers.core import Layer
 
 class SoftMaxLayer(Layer):
 	def __init__(self):
-		pass
+		Layer.__init__(self)
 
 	def forward(self, x):
 		x_exp = np.exp(x)
-		return 1.*x_exp / np.sum(x_exp)
+		output = 1.*x_exp / np.sum(x_exp)
+		self.output = output
+		return output
 
 	def backward(self, x, grad):
-		return x #TODO
+		d = self.output.shape[0]
+		gradInput = np.zeros((d, d))
+		for i in range(d):
+			for j in range(d):
+				gradInput[i][j] = self.output[i]*(int(i==j)-self.output[j])
+		return grad*gradInput
 
 	def __str__(self):
 		string = "SoftMaxLayer"

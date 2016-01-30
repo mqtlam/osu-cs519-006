@@ -3,11 +3,13 @@ from layers.core import Layer
 
 class SigmoidLayer(Layer):
 	def __init__(self):
-		pass
+		Layer.__init__(self)
 
 	def forward(self, x):
 		# expit is sigmoid
-		return expit(x)
+		output = expit(x)
+		self.output = output
+		return output
 
 	def backward(self, x, grad):
 		return expit(x)*(1-expit(x))

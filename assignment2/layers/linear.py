@@ -6,6 +6,8 @@ class LinearLayer(Layer):
 	DEFAULT_INITIAL_SIGMA = 0.1
 
 	def __init__(self, input_dim, output_dim, **kwargs):
+		Layer.__init__(self)
+
 		self.input_dim = input_dim
 		self.output_dim = output_dim
 
@@ -24,7 +26,9 @@ class LinearLayer(Layer):
 			self.b = np.zeros(output_dim)
 
 	def forward(self, x):
-		return np.dot(self.W, x) + self.b
+		output = np.dot(self.W, x) + self.b
+		self.output = output
+		return output
 
 	def backward(self, x, grad):
 		return x
