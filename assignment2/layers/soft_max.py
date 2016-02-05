@@ -5,19 +5,21 @@ class SoftMaxLayer(Layer):
 	def __init__(self):
 		Layer.__init__(self)
 
-	def forward(self, x):
-		x_exp = np.exp(x)
-		output = 1.*x_exp / np.sum(x_exp)
-		self.output = output
-		return output
+	def computeOutput(self, input):
+		input_exp = np.exp(input)
+		return 1.*input_exp / np.sum(input_exp)
 
-	def backward(self, x, grad):
-		d = self.output.shape[0]
-		gradInput = np.zeros((d, d))
+	def computeGradInput(self, input, out, gradOut):
+		d = out.shape[0]
+		gradIn = np.zeros((d, d))
 		for i in range(d):
 			for j in range(d):
-				gradInput[i][j] = self.output[i]*(int(i==j)-self.output[j])
-		return grad*gradInput
+				gradIn[i][j] = out[i]*(int(i==j)-out[j])
+		return gradOut*gradIn
+
+	def updateParams(self, solver):
+		# soft max has no parameters
+		pass
 
 	def __str__(self):
 		string = "SoftMaxLayer"

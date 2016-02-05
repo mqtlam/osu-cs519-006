@@ -5,14 +5,17 @@ class SigmoidLayer(Layer):
 	def __init__(self):
 		Layer.__init__(self)
 
-	def forward(self, x):
+	def computeOutput(self, input):
 		# expit is sigmoid
-		output = expit(x)
-		self.output = output
-		return output
+		return expit(input)
 
-	def backward(self, x, grad):
-		return expit(x)*(1-expit(x))
+	def computeGradInput(self, input, out, gradOut):
+		# TODO
+		return expit(input)*(1-expit(input))
+
+	def updateParams(self, solver):
+		# sigmoid has no parameters
+		pass
 
 	def __str__(self):
 		string = "SigmoidLayer"

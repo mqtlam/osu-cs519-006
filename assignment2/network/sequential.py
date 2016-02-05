@@ -57,7 +57,7 @@ class Sequential:
 			self.__debug_print__("[backward] [{0}] {1}".format(index, layer))
 			self.__debug_print__("[backward] Input=\n\t\t{0}".format(g))
 
-			result = layer.backward(x, g)
+			result = layer.backward(g)
 
 			self.__debug_print__("[backward] Output=\n\t\t{0}\n".format(result))
 

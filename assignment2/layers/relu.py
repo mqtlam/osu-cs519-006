@@ -5,13 +5,16 @@ class ReluLayer(Layer):
 	def __init__(self):
 		Layer.__init__(self)
 
-	def forward(self, x):
-		output = x * (x > 0)
-		self.output = output
-		return output
+	def computeOutput(self, input):
+		return input * (input > 0)
 
-	def backward(self, x, grad):
-		return 1 * (x > 0) + 0 * (x < 0) + np.random.uniform(0, 1, x.shape) * (x == 0)
+	def computeGradInput(self, input, out, gradOut):
+		# TODO
+		return 1 * (input > 0) + 0 * (input < 0) + np.random.uniform(0, 1, input.shape) * (input == 0)
+
+	def updateParams(self, solver):
+		# relu has no parameters
+		pass
 
 	def __str__(self):
 		string = "ReluLayer"

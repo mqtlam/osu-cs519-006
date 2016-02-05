@@ -25,13 +25,18 @@ class LinearLayer(Layer):
 		else:
 			self.b = np.zeros(output_dim)
 
-	def forward(self, x):
-		output = np.dot(self.W, x) + self.b
-		self.output = output
-		return output
+	def computeOutput(self, input):
+		return np.dot(self.W, input) + self.b
 
-	def backward(self, x, grad):
-		return x
+	def computeGradInput(self, input, out, gradOut):
+		return self.W # TODO
+
+	def updateParams(self, solver):
+		W_grad = self.input # TODO
+		b_grad = np.ones(output_dim) # TODO
+
+		self.W = solver.update(self.W, W_grad)
+		self.b = solver.update(self.b, b_grad)
 
 	def __str__(self):
 		string = "LinearLayer: input_dim={0}, output_dim={1}".format(self.input_dim, self.output_dim)
