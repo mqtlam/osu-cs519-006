@@ -33,7 +33,7 @@ class LinearLayer(Layer):
 
 	def updateParams(self, solver):
 		W_grad = self.input # TODO
-		b_grad = np.ones(output_dim) # TODO
+		b_grad = np.ones(self.output_dim) # TODO
 
 		self.W = solver.update(self.W, W_grad)
 		self.b = solver.update(self.b, b_grad)

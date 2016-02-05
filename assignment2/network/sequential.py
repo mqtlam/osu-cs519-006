@@ -68,6 +68,15 @@ class Sequential:
 
 		return g
 
+	def updateParams(self, solver):
+		self.__debug_print__("[updateParams] Updating network params...\n")
+
+		for index, layer in enumerate(reversed(self.graph)):
+			self.__debug_print__("[updateParams] [{0}] {1}".format(index, layer))
+			layer.updateParams(solver)
+
+		self.__debug_print__("\n[updateParams] Done updating params.")
+
 	def __str__(self):
 		string = "Sequential Network: "
 		for index, layer in enumerate(self.graph):

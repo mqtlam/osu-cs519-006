@@ -1,4 +1,4 @@
-from solvers.core import Solver
+from solver.core import Solver
 
 class EasySolver(Solver):
 	DEFAULT_LEARNING_RATE = 0.1

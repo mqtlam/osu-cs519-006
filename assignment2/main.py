@@ -6,6 +6,7 @@ from layers.linear import LinearLayer
 from network.sequential import Sequential
 from util.dataset import CifarDataset
 from loss.cross_entropy import CrossEntropyLoss
+from solver.easy_solver import EasySolver
 
 # set random seed
 np.random.seed(13141)
@@ -42,6 +43,9 @@ loss = CrossEntropyLoss()
 
 print("Loss function: {0}\n".format(loss))
 
+# solver
+solver = EasySolver(learning_rate)
+
 # forward propagation test
 train_image_index = 0
 target = data.get_train_labels()[train_image_index, 0]
@@ -58,6 +62,9 @@ gradients = loss.backward(z, target)
 grad_x = net.backward(x, gradients)
 
 print("input gradient={0}".format(grad_x))
+
+# update params test
+net.updateParams(solver)
 
 # # training loop
 # for epoch in range(num_epoch):
