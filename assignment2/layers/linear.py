@@ -35,8 +35,8 @@ class LinearLayer(Layer):
 		W_grad = self.input # TODO
 		b_grad = np.ones(self.output_dim) # TODO
 
-		self.W = solver.update(self.W, W_grad)
-		self.b = solver.update(self.b, b_grad)
+		self.W = solver.update(self.W, W_grad, id(self))
+		self.b = solver.update(self.b, b_grad, id(self)+1)
 
 	def __str__(self):
 		string = "LinearLayer: input_dim={0}, output_dim={1}".format(self.input_dim, self.output_dim)

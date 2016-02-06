@@ -6,7 +6,7 @@ from layers.linear import LinearLayer
 from network.sequential import Sequential
 from util.dataset import CifarDataset
 from loss.cross_entropy import CrossEntropyLoss
-from solver.easy_solver import EasySolver
+from solver.momentum_solver import MomentumSolver
 
 # set random seed
 np.random.seed(13141)
@@ -25,7 +25,7 @@ num_hidden_units = 20
 learning_rate = 0.01
 mini_batch_size = 256
 momentum = 0.1
-num_epoch = 25
+num_epoch = 1
 
 num_batches = num_training // mini_batch_size
 
@@ -44,53 +44,55 @@ loss = CrossEntropyLoss()
 print("Loss function: {0}\n".format(loss))
 
 # solver
-solver = EasySolver(learning_rate)
+solver = MomentumSolver(lr=learning_rate, mu=0.6)
 
-# forward propagation test
-train_image_index = 0
-target = data.get_train_labels()[train_image_index, 0]
-x = data.get_train_data()[0]
-z = net.forward(x)
-l = loss.forward(z, target)
-
-print("input={0}".format(x))
-print("output={0}".format(z))
-print("loss={0}".format(l))
-
-# backward propagation test
-gradients = loss.backward(z, target)
-grad_x = net.backward(x, gradients)
-
-print("input gradient={0}".format(grad_x))
-
-# update params test
-net.updateParams(solver)
-
-# # training loop
-# for epoch in range(num_epoch):
-# 	print("Training epoch {0}...".format(epoch))
-# 	# training
-# 	for batch in tqdm(range(num_batches)):
-# 		# get batch
-# 		train_image_index = 0
-# 		target = data.get_train_labels()[train_image_index, 0]
-# 		x = data.get_train_data()[0]
+# # forward propagation test
+# train_image_index = 0
+# target = data.get_train_labels()[train_image_index, 0]
+# x = data.get_train_data()[0]
+# z = net.forward(x)
+# l = loss.forward(z, target)
 # 
-# 		# forward
-# 		z = net.forward(x)
-# 		l = loss.forward(z, target)
+# print("input={0}".format(x))
+# print("output={0}".format(z))
+# print("loss={0}".format(l))
 # 
-# 		# backward
-# 		gradients = loss.backward(z, target)
-# 		grad_x = net.backward(x, gradients)
+# # backward propagation test
+# gradients = loss.backward(z, target)
+# grad_x = net.backward(x, gradients)
 # 
-# 		# update
+# print("input gradient={0}".format(grad_x))
 # 
-# 	# evaluation
-# 	test_image_index = 0
-# 	target = data.get_test_labels()[test_image_index, 0]
-# 	x = data.get_test_data()[0]
-# 
-# 	z = net.forward(x)
-# 	l = loss.forward(z, target)
-# 	print("Evaluation: {0}".format(l))
+# # update params test
+# net.updateParams(solver)
+
+# training loop
+for epoch in range(num_epoch):
+	print("Training epoch {0}...".format(epoch))
+	# training
+	for batch in range(num_batches):
+		# get batch
+		train_image_index = batch
+		target = data.get_train_labels()[train_image_index, 0]
+		x = data.get_train_data()[train_image_index]
+
+		# forward
+		z = net.forward(x)
+		l = loss.forward(z, target)
+		print("loss: {0}".format(l))
+
+		# backward
+		gradients = loss.backward(z, target)
+		grad_x = net.backward(x, gradients)
+
+		# update
+		net.updateParams(solver)
+
+	# evaluation
+	test_image_index = 0
+	target = data.get_test_labels()[test_image_index, 0]
+	x = data.get_test_data()[0]
+
+	z = net.forward(x)
+	l = loss.forward(z, target)
+	print("Evaluation: {0}".format(l))
