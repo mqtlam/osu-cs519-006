@@ -5,10 +5,10 @@ readonly DATASET_FILE=$1
 
 readonly DATA_DIR="data"
 readonly VIRTUALENV_DIR="venv"
-# readonly VIRTUALENV_DIR="venv3"
+readonly VIRTUALENV_PYTHON3_DIR="venv3"
 readonly REQUIREMENTS_FILE="requirements.txt"
 readonly PYTHON_BIN="/usr/bin/python2.7"
-# readonly PYTHON_BIN="/usr/bin/python3"
+readonly PYTHON3_BIN="/usr/bin/python3"
 
 usage() {
 	echo "usage: $SCRIPT_NAME /path/to/cifar-2class-py.zip"
@@ -27,10 +27,12 @@ fi
 reset_environment() {
 	rm -rf $DATA_DIR
 	rm -rf $VIRTUALENV_DIR
+	rm -rf $VIRTUALENV_PYTHON3_DIR
 }
 
 create_virtualenv() {
 	virtualenv --no-site-packages -p $PYTHON_BIN $VIRTUALENV_DIR
+	virtualenv --no-site-packages -p $PYTHON3_BIN $VIRTUALENV_PYTHON3_DIR
 }
 
 save_dependencies_list() {
@@ -41,8 +43,8 @@ save_dependencies_list() {
 install_dependencies() {
 	pip install numpy
 	pip install scipy
-	pip install tqdm
 	pip install ipython
+	pip install sklearn
 
 	save_dependencies_list
 }
@@ -56,26 +58,42 @@ setup_dataset() {
 	unzip $DATASET_FILE -d $DATA_DIR/
 }
 
+create_protcol2_dataset() {
+	cd util
+	python cifar_for_python2.py
+	cd -
+}
+
 main() {
 	reset_environment
 
 	echo
 	echo "[${SCRIPT_NAME}] Creating virtual environment..."
 	create_virtualenv
-	source $VIRTUALENV_DIR/bin/activate
 
 	echo
 	echo "[${SCRIPT_NAME}] Installing dependencies..."
+
+	source $VIRTUALENV_DIR/bin/activate
 	install_dependencies
 	# alternatively, install from requirements.txt:
 	# install_dependencies_from_requirements
+	deactivate
+
+	source $VIRTUALENV_PYTHON3_DIR/bin/activate
+	install_dependencies
+	# alternatively, install from requirements.txt:
+	# install_dependencies_from_requirements
+	deactivate
 
 	echo
 	echo "[${SCRIPT_NAME}] Extracting dataset..."
 	setup_dataset
 
 	echo
-	echo "[${SCRIPT_NAME}] Cleaning up..."
+	echo "[${SCRIPT_NAME}] Converting dataset for Python 2..."
+	source $VIRTUALENV_PYTHON3_DIR/bin/activate
+	create_protcol2_dataset
 	deactivate
 
 	echo

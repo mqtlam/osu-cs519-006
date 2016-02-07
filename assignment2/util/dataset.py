@@ -4,6 +4,7 @@ except:
 	import pickle
 
 from util.data_preprocessing import DataPreprocessing
+from sklearn.utils import shuffle
 
 class Dataset:
 	def __init__(self):
@@ -24,10 +25,16 @@ class CifarDataset(Dataset):
 		with open(dataset_path, 'rb') as f:
 			self.original_data = pickle.load(f)
 		self.data = self.preprocess(self.original_data)
+		self.data = self.shuffle_data(self.data)
 
 	def save(self, dataset_path, protocol=3):
 		with open(dataset_path, 'wb') as f:
 			pickle.dump(self.original_data, f, protocol)
+
+	def shuffle_data(self, data):
+		data['train_data'], data['train_labels'] = shuffle(data['train_data'], data['train_labels'])
+		data['test_data'], data['test_labels'] = shuffle(data['test_data'], data['test_labels'])
+		return data
 
 	def preprocess(self, data):
 		meanval = DataPreprocessing.compute_mean(data['train_data'])
@@ -35,6 +42,11 @@ class CifarDataset(Dataset):
 		data['train_data'] = DataPreprocessing.normalize_data(data['train_data'], mean=meanval, std=stdval)
 		data['test_data'] = DataPreprocessing.normalize_data(data['test_data'], mean=meanval, std=stdval)
 		return data
+
+	def get_train_batches(self, batch_size):
+		num_train = self.get_num_train()
+		for i in range(0, num_train, batch_size):
+			yield (self.get_train_data()[i:min(i+batch_size, num_train-1)], self.get_train_labels()[i:min(i+batch_size, num_train-1)])
 
 	def get_train_data(self):
 		return self.data['train_data']
