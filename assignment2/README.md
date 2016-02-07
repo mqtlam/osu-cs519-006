@@ -51,5 +51,6 @@ See requirements.txt for complete list.
 
 ## Quick Start
 1. Download the cifar datset to this folder.
-2. Set up the python virtual environment and extract dataset using `./bootstrap.sh cifar-2class-py.zip`
-3. Run `main.py` for training and test
+2. Set up the python virtual environment and extract dataset using `./bootstrap.sh cifar-2class-py.zip` (this might take a while)
+3. Activate the virtual environment (`source venv/bin/activate`)
+4. Run `main.py` for training and test

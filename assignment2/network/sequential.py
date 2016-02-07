@@ -59,11 +59,9 @@ class Sequential:
 			self.debug.disp("[backward] [{0}] {1}".format(index, layer))
 			self.debug.disp("[backward] Input=\n\t\t{0}".format(g))
 
-			result = layer.backward(g)
+			g = layer.backward(g)
 
-			self.debug.disp("[backward] Output=\n\t\t{0}\n".format(result))
-
-			g = result
+			self.debug.disp("[backward] Output=\n\t\t{0}\n".format(g))
 
 		self.debug.disp("[backward] Final Output={0}\n".format(g))
 		self.debug.disp("[backward] Done with backward pass.")

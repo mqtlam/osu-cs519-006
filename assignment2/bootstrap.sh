@@ -59,9 +59,7 @@ setup_dataset() {
 }
 
 create_protcol2_dataset() {
-	cd util
 	python cifar_for_python2.py
-	cd -
 }
 
 main() {
