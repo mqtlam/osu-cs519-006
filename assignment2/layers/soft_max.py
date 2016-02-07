@@ -15,7 +15,7 @@ class SoftMaxLayer(Layer):
 		for i in range(d):
 			for j in range(d):
 				gradIn[i][j] = out[i]*(int(i==j)-out[j])
-		return gradOut*gradIn
+		return np.dot(gradOut, gradIn)
 
 	def updateParams(self, solver):
 		# soft max has no parameters

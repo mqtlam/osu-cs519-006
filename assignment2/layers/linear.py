@@ -29,11 +29,12 @@ class LinearLayer(Layer):
 		return np.dot(self.W, input) + self.b
 
 	def computeGradInput(self, input, out, gradOut):
-		return self.W # TODO
+		return np.dot(gradOut, self.W)
 
 	def updateParams(self, solver):
-		W_grad = self.input # TODO
-		b_grad = np.ones(self.output_dim) # TODO
+		input_tile = np.tile(self.input, (self.output_dim, 1))
+		W_grad = np.dot(self.gradOut, input_tile)
+		b_grad = np.dot(self.gradOut, np.identity(self.output_dim))
 
 		self.W = solver.update(self.W, W_grad, id(self))
 		self.b = solver.update(self.b, b_grad, id(self)+1)

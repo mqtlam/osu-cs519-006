@@ -11,6 +11,9 @@ from solver.momentum_solver import MomentumSolver
 # set random seed
 np.random.seed(13141)
 
+# debug mode
+debug_mode = False
+
 # load data
 DATASET_PATH = 'data/cifar_2class.protocol2'
 # DATASET_PATH = 'data/cifar_2class'
@@ -21,16 +24,16 @@ num_test = data.get_num_test()
 input_dim = data.get_data_dim()
 
 # hyperparameters
-num_hidden_units = 20
+num_hidden_units = 10
 learning_rate = 0.01
 mini_batch_size = 256
 momentum = 0.1
-num_epoch = 1
+num_epoch = 25
 
 num_batches = num_training // mini_batch_size
 
 # network
-net = Sequential(debug=True)
+net = Sequential(debug=debug_mode)
 net.add( LinearLayer(input_dim, num_hidden_units) )
 net.add( ReluLayer() )
 net.add( LinearLayer(num_hidden_units, 2) )
@@ -79,7 +82,7 @@ for epoch in range(num_epoch):
 		# forward
 		z = net.forward(x)
 		l = loss.forward(z, target)
-		print("loss: {0}".format(l))
+		print("\tloss: {0}".format(l))
 
 		# backward
 		gradients = loss.backward(z, target)

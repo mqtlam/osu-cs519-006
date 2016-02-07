@@ -9,8 +9,8 @@ class ReluLayer(Layer):
 		return input * (input > 0)
 
 	def computeGradInput(self, input, out, gradOut):
-		# TODO
-		return 1 * (input > 0) + 0 * (input < 0) + np.random.uniform(0, 1, input.shape) * (input == 0)
+		gradIn = np.diag(1 * (input > 0) + 0 * (input < 0) + np.random.uniform(0, 1, input.shape) * (input == 0))
+		return np.dot(gradOut, gradIn) 
 
 	def updateParams(self, solver):
 		# relu has no parameters

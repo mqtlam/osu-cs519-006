@@ -11,7 +11,7 @@ class SigmoidLayer(Layer):
 
 	def computeGradInput(self, input, out, gradOut):
 		# TODO
-		return expit(input)*(1-expit(input))
+		return gradOut * expit(input)*(1-expit(input))
 
 	def updateParams(self, solver):
 		# sigmoid has no parameters
