@@ -18,8 +18,8 @@ class Dataset:
 
 class CifarDataset(Dataset):
 	def __init__(self):
-		self.original_data = dict
-		self.data = dict
+		self.original_data = {}
+		self.data = {}
 
 	def load(self, dataset_path):
 		with open(dataset_path, 'rb') as f:
@@ -45,7 +45,7 @@ class CifarDataset(Dataset):
 
 	def get_train_batches(self, batch_size):
 		num_train = self.get_num_train()
-		for i in range(0, num_train, batch_size):
+		for i in xrange(0, num_train, batch_size):
 			yield (self.get_train_data()[i:min(i+batch_size, num_train-1)], self.get_train_labels()[i:min(i+batch_size, num_train-1)])
 
 	def get_train_data(self):

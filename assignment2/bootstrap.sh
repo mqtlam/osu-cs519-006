@@ -7,6 +7,7 @@ readonly DATA_DIR="data"
 readonly VIRTUALENV_DIR="venv"
 readonly VIRTUALENV_PYTHON3_DIR="venv3"
 readonly REQUIREMENTS_FILE="requirements.txt"
+readonly REQUIREMENTS_PYTHON3_FILE="requirements_python3.txt"
 readonly PYTHON_BIN="/usr/bin/python2.7"
 readonly PYTHON3_BIN="/usr/bin/python3"
 
@@ -36,8 +37,9 @@ create_virtualenv() {
 }
 
 save_dependencies_list() {
-	rm -f $REQUIREMENTS_FILE
-	pip freeze > $REQUIREMENTS_FILE
+	local $file=$0
+	rm -f $file
+	pip freeze > $file
 }
 
 install_dependencies() {
@@ -45,8 +47,6 @@ install_dependencies() {
 	pip install scipy
 	pip install ipython
 	pip install sklearn
-
-	save_dependencies_list
 }
 
 install_dependencies_from_requirements() {
@@ -78,12 +78,14 @@ main() {
 	install_dependencies
 	# alternatively, install from requirements.txt:
 	# install_dependencies_from_requirements
+	save_dependencies_list $REQUIREMENTS_FILE
 	deactivate
 
 	source $VIRTUALENV_PYTHON3_DIR/bin/activate
 	install_dependencies
 	# alternatively, install from requirements.txt:
 	# install_dependencies_from_requirements
+	save_dependencies_list $REQUIREMENTS_PYTHON3_FILE
 	deactivate
 
 	echo

@@ -39,13 +39,13 @@ See requirements.txt for complete list.
 		momentum_solver.py		weight updates via momentum
 	util/				Python utilities for learning and inference
 		benchmark.py			benchmarking tools
-		cifar_for_python2.py		convert cifar dataset for Python 2 compatibility
 		data_preprocessing.py		image data preprocessing
 		dataset.py			loading and handling datasets
 		debug.py			utilities useful for debugging
 		hyperparameter.py		hyperparameter tuning
 		monitor.py			training monitoring
 	bootstrap.sh			Run first to set up environment
+	cifar_for_python2.py		convert cifar dataset for Python 2 compatibility
 	main.py				main script
 ```
 
