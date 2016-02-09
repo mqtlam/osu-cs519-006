@@ -1,5 +1,4 @@
 import numpy as np
-from tqdm import tqdm
 from layers.relu import ReluLayer
 from layers.soft_max import SoftMaxLayer
 from layers.linear import LinearLayer

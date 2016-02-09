@@ -8,8 +8,8 @@ readonly VIRTUALENV_DIR="venv"
 readonly VIRTUALENV_PYTHON3_DIR="venv3"
 readonly REQUIREMENTS_FILE="requirements.txt"
 readonly REQUIREMENTS_PYTHON3_FILE="requirements_python3.txt"
-readonly PYTHON_BIN="/usr/bin/python2.7"
-readonly PYTHON3_BIN="/usr/bin/python3"
+readonly PYTHON_BIN="python2.7"
+readonly PYTHON3_BIN="python3"
 
 usage() {
 	echo "usage: $SCRIPT_NAME /path/to/cifar-2class-py.zip"
@@ -70,7 +70,7 @@ main() {
 	create_virtualenv
 
 	echo
-	echo "[${SCRIPT_NAME}] Installing dependencies..."
+	echo "[${SCRIPT_NAME}] Installing python2.7 dependencies..."
 
 	source $VIRTUALENV_DIR/bin/activate
 	install_dependencies
@@ -78,6 +78,9 @@ main() {
 	# install_dependencies_from_requirements
 	save_dependencies_list $REQUIREMENTS_FILE
 	deactivate
+
+	echo
+	echo "[${SCRIPT_NAME}] Installing python3 dependencies..."
 
 	source $VIRTUALENV_PYTHON3_DIR/bin/activate
 	install_dependencies
