@@ -10,8 +10,8 @@ class SigmoidLayer(Layer):
 		return expit(input)
 
 	def computeGradInput(self, input, out, gradOut):
-		# TODO
-		return gradOut * expit(input)*(1-expit(input))
+		gradIn = np.diag(expit(input)*(1-expit(input)))
+		return np.dot(gradOut, gradIn)
 
 	def updateParams(self, solver):
 		# sigmoid has no parameters
