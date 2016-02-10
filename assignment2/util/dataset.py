@@ -46,8 +46,13 @@ class CifarDataset(Dataset):
 	def get_train_batches(self, batch_size):
 		num_train = self.get_num_train()
 		for i in xrange(0, num_train, batch_size):
+			# get batch
 			train_data = self.get_train_data()[i:min(i+batch_size, num_train-1)]
 			train_labels = self.get_train_labels()[i:min(i+batch_size, num_train-1)]
+			# reshape
+			train_data = train_data[..., None]
+			train_data = train_data.transpose([1,2,0])
+			train_labels = train_labels.reshape((1,1,-1))
 			yield (train_data, train_labels)
 
 	def get_train_data(self):
