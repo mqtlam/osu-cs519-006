@@ -46,7 +46,9 @@ class CifarDataset(Dataset):
 	def get_train_batches(self, batch_size):
 		num_train = self.get_num_train()
 		for i in xrange(0, num_train, batch_size):
-			yield (self.get_train_data()[i:min(i+batch_size, num_train-1)], self.get_train_labels()[i:min(i+batch_size, num_train-1)])
+			train_data = self.get_train_data()[i:min(i+batch_size, num_train-1)]
+			train_labels = self.get_train_labels()[i:min(i+batch_size, num_train-1)]
+			yield (train_data, train_labels)
 
 	def get_train_data(self):
 		return self.data['train_data']
