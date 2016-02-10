@@ -25,8 +25,15 @@ class LinearLayer(Layer):
 		else:
 			self.b = np.zeros(output_dim)
 
-	def computeOutput(self, input):
+	def linearTransform(self, input):
 		return np.dot(self.W, input) + self.b
+
+	def computeOutput(self, input):
+		input_unbatched = self.__unbatch__(input)
+		for i in range(len(input_unbatched)):
+			input_unbatched[i] = self.linearTransform(input_unbatched[i].reshape(-1))
+		output = self.__batch__(input_unbatched)
+		return output
 
 	def computeGradInput(self, input, out, gradOut):
 		return np.dot(gradOut, self.W)

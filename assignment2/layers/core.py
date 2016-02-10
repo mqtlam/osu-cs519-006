@@ -1,3 +1,5 @@
+import numpy as np
+
 class Layer:
 	"""Abstract Layer class.
 	"""
@@ -5,8 +7,8 @@ class Layer:
 	def __init__(self):
 		"""Initializes a Layer.
 
-		The inputs, outputs, input gradients 
-		and output gradients are stored for 
+		The inputs, outputs, input gradients
+		and output gradients are stored for
 		computational efficiency.
 		"""
 		self.out = None
@@ -17,7 +19,7 @@ class Layer:
 	def forward(self, input):
 		"""Perform a forward pass.
 
-		Computes a forward pass and also stores the 
+		Computes a forward pass and also stores the
 		input and outputs.
 
 		Args:
@@ -33,10 +35,10 @@ class Layer:
 	def backward(self, gradOut):
 		"""Performs a backward pass.
 
-		Computes a backward pass and also stores the 
+		Computes a backward pass and also stores the
 		output gradients and input gradients.
 
-		Note: assumes forward() was called before this otherwise it 
+		Note: assumes forward() was called before this otherwise it
 		doesn't compute the gradients correctly!
 
 		Args:
@@ -52,10 +54,10 @@ class Layer:
 	def updateParams(self, solver):
 		"""Update the parameters of the layer after backward pass.
 
-		Specific layers derived from Layer are responsible 
+		Specific layers derived from Layer are responsible
 		for implementing this function.
 
-		Some layers do not have parameters so simply override 
+		Some layers do not have parameters so simply override
 		with a function that does nothing.
 
 		Args:
@@ -66,7 +68,7 @@ class Layer:
 	def computeOutput(self, input):
 		"""Compute the output of layer from forward pass.
 
-		Specific layers derived from Layer are responsible 
+		Specific layers derived from Layer are responsible
 		for implementing this function.
 
 		Args:
@@ -80,7 +82,7 @@ class Layer:
 	def computeGradInput(self, input, out, gradOut):
 		"""Compute the input gradient of layer from backward pass.
 
-		Specific layers derived from Layer are responsible 
+		Specific layers derived from Layer are responsible
 		for implementing this function.
 
 		Args:
@@ -92,6 +94,38 @@ class Layer:
 			gradient of input to layer for continuing backprop
 		"""
 		raise NotImplementedError
+
+	def __unbatch__(self, input):
+		"""Takes a mxnxb numpy array and returns
+		a list of b mxn numpy arrays.
+
+		Args:
+			input: mxnxb numpy array
+
+		Returns:
+			list of b mxn numpy arrays
+		"""
+		batch_size = input.shape[2]
+		output = np.dsplit(input, batch_size)
+		for i in range(batch_size):
+			output[i] = output[i][:,:,0]
+		return output
+
+	def __batch__(self, input):
+		"""Takes a list of b mxn numpy arrays and returns
+		a mxnxb numpy array.
+
+		Args:
+			input: list of b mxn numpy arrays
+
+		Returns:
+			mxnxb numpy array
+		"""
+		batch_size = len(input)
+		for i in range(batch_size):
+			input[i] = input[i][..., None]
+		output = np.dstack(input)
+		return output
 
 	def __str__(self):
 		string =  "Layer (abstract)"
