@@ -11,7 +11,7 @@ from solver.momentum_solver import MomentumSolver
 np.random.seed(13141)
 
 # debug mode
-debug_mode = False
+debug_mode = True
 
 # load data
 DATASET_PATH = 'data/cifar_2class.protocol2'
@@ -27,7 +27,7 @@ num_hidden_units = 10
 learning_rate = 0.01
 mini_batch_size = 256
 momentum = 0.1
-num_epoch = 25
+num_epoch = 25 if not debug_mode else 1
 
 # network
 net = Sequential(debug=debug_mode)
@@ -80,14 +80,29 @@ for epoch in range(num_epoch):
 
 		# forward
 		z = net.forward(x)
+		if debug_mode:
+			print("\toutput: {0}".format(z))
+			print("\toutput shape: {0}".format(z.shape))
+
+		# loss
 		l = loss.forward(z, target)
 		print("\tloss: {0}".format(l))
+		if debug_mode:
+			print("\tloss shape: {0}".format(l.shape))
+
+		# backward loss
+		gradients = loss.backward(z, target)
+		if debug_mode:
+			print("\tgradients: {0}".format(gradients))
+			print("\tgradients shape: {0}".format(gradients.shape))
 
 		# backward
-		gradients = loss.backward(z, target)
 		grad_x = net.backward(x, gradients)
+		if debug_mode:
+			print("\tgrad_x: {0}".format(grad_x))
+			print("\tgrad_x: {0}".format(grad_x.shape))
 
-		# update
+		# update parameters
 		net.updateParams(solver)
 
 	# evaluation
