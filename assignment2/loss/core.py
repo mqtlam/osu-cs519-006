@@ -1,4 +1,6 @@
-class Loss:
+from module import Module
+
+class Loss(Module):
 	def __init__():
 		pass
 
