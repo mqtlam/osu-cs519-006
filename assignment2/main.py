@@ -1,4 +1,5 @@
 import numpy as np
+
 from layers.relu import ReluLayer
 from layers.soft_max import SoftMaxLayer
 from layers.linear import LinearLayer
@@ -8,6 +9,9 @@ from loss.cross_entropy import CrossEntropyLoss
 from solver.easy_solver import EasySolver
 from solver.momentum_solver import MomentumSolver
 
+from util.benchmark import Timer
+timer = Timer()
+
 # set random seed
 np.random.seed(13141)
 
@@ -15,9 +19,14 @@ np.random.seed(13141)
 debug_mode = False
 
 # load data
+print("Loading dataset...")
+timer.begin("dataset")
 DATASET_PATH = 'cifar-2class-py2/cifar_2class_py2.p'
 data = CifarDataset()
 data.load(DATASET_PATH)
+print("Loaded dataset in {0:2f}s.".format(timer.getElapsed("dataset")))
+
+# get data stats
 num_training = data.get_num_train()
 num_test = data.get_num_test()
 input_dim = data.get_data_dim()
@@ -50,6 +59,7 @@ solver = MomentumSolver(lr=learning_rate, mu=momentum_mu)
 # training loop
 for epoch in range(num_epoch):
 	print("Training epoch {0}...".format(epoch))
+	timer.begin("epoch")
 	# training
 	for iter, batch in enumerate(data.get_train_batches(mini_batch_size)):
 		if iter > 1 and debug_mode:
@@ -97,3 +107,6 @@ for epoch in range(num_epoch):
 	l = loss.forward(z, target)
 	l_avg = 1./batch_size*l.sum(2)[0,0]
 	print("Evaluation: {0}".format(l_avg))
+
+	# timing
+	print("Finished epoch {1} in {0:2f}s.".format(timer.getElapsed("dataset"), epoch))
