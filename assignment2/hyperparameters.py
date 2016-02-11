@@ -88,5 +88,44 @@ def main():
                   momentum_mu,
                   mini_batch_size)
 
+    # experiments for learning rate
+    for learning_rate in learning_rate_list:
+        # use defaults for other variables
+        num_hidden_units = num_hidden_units_list[0]
+        momentum_mu = momentum_mu_list[0]
+        mini_batch_size = mini_batch_size_list[0]
+
+        # launch jobs
+        launchJob(num_hidden_units,
+                  learning_rate,
+                  momentum_mu,
+                  mini_batch_size)
+
+    # experiments for momentum mu
+    for momentum_mu in momentum_mu_list:
+        # use defaults for other variables
+        num_hidden_units = num_hidden_units_list[0]
+        learning_rate = learning_rate_list[0]
+        mini_batch_size = mini_batch_size_list[0]
+
+        # launch jobs
+        launchJob(num_hidden_units,
+                  learning_rate,
+                  momentum_mu,
+                  mini_batch_size)
+
+    # experiments for mini batch size
+    for mini_batch_size in mini_batch_size_list:
+        # use defaults for other variables
+        num_hidden_units = num_hidden_units_list[0]
+        learning_rate = learning_rate_list[0]
+        momentum_mu = momentum_mu_list[0]
+
+        # launch jobs
+        launchJob(num_hidden_units,
+                  learning_rate,
+                  momentum_mu,
+                  mini_batch_size)
+
 if __name__ == '__main__':
     main()
