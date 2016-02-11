@@ -25,18 +25,26 @@ class LinearLayer(Layer):
 		else:
 			self.b = np.zeros(output_dim)
 
-	def linearTransform(self, input):
+	def linear(self, input):
 		return np.dot(self.W, input) + self.b
 
 	def computeOutput(self, input):
 		input_unbatched = self.__unbatch__(input)
 		for i in range(len(input_unbatched)):
-			input_unbatched[i] = self.linearTransform(input_unbatched[i].reshape(-1))
+			input_unbatched[i] = self.linear(input_unbatched[i].reshape(-1))
 		output = self.__batch__(input_unbatched)
 		return output
 
-	def computeGradInput(self, input, out, gradOut):
+	def linearGrad(self, gradOut):
 		return np.dot(gradOut, self.W)
+
+	def computeGradInput(self, input, out, gradOut):
+		gradOut_unbatched = self.__unbatch__(gradOut)
+		output = []
+		for i in range(len(gradOut_unbatched)):
+			output.append(self.linearGrad(gradOut_unbatched[i].reshape(-1)))
+		output = self.__batch__(output)
+		return output
 
 	def updateParams(self, solver):
 		input_tile = np.tile(self.input, (self.output_dim, 1))

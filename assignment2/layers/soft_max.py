@@ -16,13 +16,23 @@ class SoftMaxLayer(Layer):
 		output = self.__batch__(input_unbatched)
 		return output
 
-	def computeGradInput(self, input, out, gradOut):
+	def softmaxGrad(self, out, gradOut):
 		d = out.shape[0]
 		gradIn = np.zeros((d, d))
 		for i in range(d):
 			for j in range(d):
 				gradIn[i][j] = out[i]*(int(i==j)-out[j])
 		return np.dot(gradOut, gradIn)
+
+	def computeGradInput(self, input, out, gradOut):
+		out_unbatched = self.__unbatch__(out)
+		gradOut_unbatched = self.__unbatch__(gradOut)
+		output = []
+		for i in range(len(gradOut_unbatched)):
+			output.append(self.softmaxGrad(out_unbatched[i].reshape(-1),
+						  gradOut_unbatched[i].reshape(-1)))
+		output = self.__batch__(output)
+		return output
 
 	def updateParams(self, solver):
 		# soft max has no parameters

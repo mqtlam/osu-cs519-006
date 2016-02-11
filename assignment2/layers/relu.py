@@ -8,9 +8,19 @@ class ReluLayer(Layer):
 	def computeOutput(self, input):
 		return input * (input > 0)
 
-	def computeGradInput(self, input, out, gradOut):
+	def reluGrad(self, input, gradOut):
 		gradIn = np.diag(1 * (input > 0) + 0 * (input < 0) + np.random.uniform(0, 1, input.shape) * (input == 0))
-		return np.dot(gradOut, gradIn) 
+		return np.dot(gradOut, gradIn)
+
+	def computeGradInput(self, input, out, gradOut):
+		input_unbatched = self.__unbatch__(input)
+		gradOut_unbatched = self.__unbatch__(gradOut)
+		output = []
+		for i in range(len(gradOut_unbatched)):
+			output.append(self.reluGrad(input_unbatched[i],
+						  gradOut_unbatched[i]))
+		output = self.__batch__(output)
+		return output
 
 	def updateParams(self, solver):
 		# relu has no parameters
