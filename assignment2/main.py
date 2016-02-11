@@ -23,9 +23,9 @@ num_test = data.get_num_test()
 input_dim = data.get_data_dim()
 
 # hyperparameters
-num_hidden_units = 10
+num_hidden_units = 50
 learning_rate = 0.001
-momentum_mu = 0.6
+momentum_mu = 0.7
 mini_batch_size = 256
 num_epoch = 25 if not debug_mode else 1
 
@@ -67,7 +67,7 @@ for epoch in range(num_epoch):
 
 		# loss
 		l = loss.forward(z, target)
-		l_avg = 1./batch_size*l.sum(2)
+		l_avg = 1./batch_size*l.sum(2)[0,0]
 		print("\tloss: {0}".format(l_avg))
 		if debug_mode:
 			print("\tloss: {0}".format(l))
@@ -95,5 +95,5 @@ for epoch in range(num_epoch):
 
 	z = net.forward(x)
 	l = loss.forward(z, target)
-	l_avg = 1./batch_size*l.sum(2)
+	l_avg = 1./batch_size*l.sum(2)[0,0]
 	print("Evaluation: {0}".format(l_avg))
