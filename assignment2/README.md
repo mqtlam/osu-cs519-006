@@ -15,6 +15,7 @@ This assignment implements a one hidden layer fully connected neural network in 
 - numpy 
 - scipy 
 - sklearn
+- matplotlib
 
 See requirements.txt for complete list.
 

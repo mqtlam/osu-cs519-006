@@ -62,7 +62,6 @@ target/
 .ipynb_checkpoints
 
 # Other
-__MACOSX
 assignment*/cifar-2class-py2
 assignment*/*venv*
 logs/

@@ -3,6 +3,7 @@
 readonly SCRIPT_NAME=$0
 readonly DATASET_FILE=$1
 
+readonly CIFAR_DIR="cifar-2class-py2"
 readonly LOGS_DIR="logs"
 readonly VIRTUALENV_DIR="venv"
 # readonly VIRTUALENV_PYTHON3_DIR="venv3"
@@ -26,6 +27,7 @@ if [ "$#" -ne 1 ]; then
 fi
 
 reset_environment() {
+	rm -rf $CIFAR_DIR
 	rm -rf $VIRTUALENV_DIR
 	# rm -rf $VIRTUALENV_PYTHON3_DIR
 }
@@ -46,6 +48,7 @@ install_dependencies() {
 	pip install scipy
 	pip install ipython
 	pip install sklearn
+	pip install matplotlib
 }
 
 install_dependencies_from_requirements() {
@@ -54,6 +57,7 @@ install_dependencies_from_requirements() {
 
 setup_dataset() {
 	unzip $DATASET_FILE
+	rm -rf __MACOSX
 }
 
 create_protcol2_dataset() {
