@@ -62,7 +62,8 @@ target/
 .ipynb_checkpoints
 
 # Other
-assignment*/data
+__MACOSX
+assignment*/cifar-2class-py2
 assignment*/*venv*
 *venv*
 *.swp

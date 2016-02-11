@@ -15,7 +15,7 @@ np.random.seed(13141)
 debug_mode = False
 
 # load data
-DATASET_PATH = 'data/cifar_2class_py2.p'
+DATASET_PATH = 'cifar-2class-py2/cifar_2class_py2.p'
 data = CifarDataset()
 data.load(DATASET_PATH)
 num_training = data.get_num_train()
