@@ -22,7 +22,7 @@ def writeScript(name, argumentString):
 #$ -N {0}
 
 # send stdout and stderror to this file
-#$ -o {0}.txt
+#$ -o jobs/{0}.txt
 #$ -j y
 
 # select queue
@@ -56,9 +56,7 @@ def launchJob(num_hidden_units, learning_rate,
                                                           learning_rate,
                                                           momentum_mu,
                                                           mini_batch_size)
-    argumentString = "{0} --num_hidden_units {1} --learning_rate {2} "
-                   + "--momentum_mu {3} --mini_batch_size {4} "
-                   + "--num_epoch {5}".format(experiment_name,
+    argumentString = "{0} --num_hidden_units {1} --learning_rate {2} --momentum_mu {3} --mini_batch_size {4} --num_epoch {5}".format(experiment_name,
                                               num_hidden_units,
                                               learning_rate,
                                               momentum_mu,
