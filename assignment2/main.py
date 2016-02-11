@@ -5,17 +5,17 @@ from layers.linear import LinearLayer
 from network.sequential import Sequential
 from util.dataset import CifarDataset
 from loss.cross_entropy import CrossEntropyLoss
+from solver.easy_solver import EasySolver
 from solver.momentum_solver import MomentumSolver
 
 # set random seed
 np.random.seed(13141)
 
 # debug mode
-debug_mode = True
+debug_mode = False
 
 # load data
-DATASET_PATH = 'data/cifar_2class.protocol2'
-# DATASET_PATH = 'data/cifar_2class'
+DATASET_PATH = 'data/cifar_2class_py2.p'
 data = CifarDataset()
 data.load(DATASET_PATH)
 num_training = data.get_num_train()
@@ -24,9 +24,9 @@ input_dim = data.get_data_dim()
 
 # hyperparameters
 num_hidden_units = 10
-learning_rate = 0.01
+learning_rate = 0.001
+momentum_mu = 0.6
 mini_batch_size = 256
-momentum = 0.1
 num_epoch = 25 if not debug_mode else 1
 
 # network
@@ -44,39 +44,20 @@ loss = CrossEntropyLoss()
 print("Loss function: {0}\n".format(loss))
 
 # solver
-solver = MomentumSolver(lr=learning_rate, mu=0.6)
-
-def test_propagations():
-	# forward propagation test
-	train_image_index = 0
-	target = data.get_train_labels()[train_image_index, 0]
-	x = data.get_train_data()[0]
-	z = net.forward(x)
-	l = loss.forward(z, target)
-
-	print("input={0}".format(x))
-	print("output={0}".format(z))
-	print("loss={0}".format(l))
-
-	# backward propagation test
-	gradients = loss.backward(z, target)
-	grad_x = net.backward(x, gradients)
-
-	print("input gradient={0}".format(grad_x))
-
-	# update params test
-	net.updateParams(solver)
+# solver = EasySolver(learning_rate)
+solver = MomentumSolver(lr=learning_rate, mu=momentum_mu)
 
 # training loop
 for epoch in range(num_epoch):
 	print("Training epoch {0}...".format(epoch))
 	# training
-	for batch in data.get_train_batches(mini_batch_size):
+	for iter, batch in enumerate(data.get_train_batches(mini_batch_size)):
+		if iter > 1 and debug_mode:
+			break
+
 		# get batch
 		(x, target) = batch
-		debug_index = -1
-		x = x[debug_index]
-		target = target[debug_index][0]
+		batch_size = x.shape[2]
 
 		# forward
 		z = net.forward(x)
@@ -86,8 +67,10 @@ for epoch in range(num_epoch):
 
 		# loss
 		l = loss.forward(z, target)
-		print("\tloss: {0}".format(l))
+		l_avg = 1./batch_size*l.sum(2)
+		print("\tloss: {0}".format(l_avg))
 		if debug_mode:
+			print("\tloss: {0}".format(l))
 			print("\tloss shape: {0}".format(l.shape))
 
 		# backward loss
@@ -106,10 +89,11 @@ for epoch in range(num_epoch):
 		net.updateParams(solver)
 
 	# evaluation
-	test_image_index = 0
-	target = data.get_test_labels()[test_image_index, 0]
-	x = data.get_test_data()[0]
+	target = data.get_test_labels()
+	x = data.get_test_data()
+	batch_size = x.shape[2]
 
 	z = net.forward(x)
 	l = loss.forward(z, target)
-	print("Evaluation: {0}".format(l))
+	l_avg = 1./batch_size*l.sum(2)
+	print("Evaluation: {0}".format(l_avg))
