@@ -46,10 +46,27 @@ class LinearLayer(Layer):
 		output = self.__batch__(output)
 		return output
 
+	def gradW(self, input, gradOut):
+		gradOut_tile = np.tile(gradOut[...,None], (1, self.input_dim))
+		input_tile = np.tile(input, (self.output_dim, 1))
+		W_grad = gradOut_tile * input_tile
+		return W_grad
+
+	def gradB(self, gradOut):
+		b_grad = np.dot(gradOut, np.identity(self.output_dim))
+		return b_grad
+
 	def updateParams(self, solver):
-		input_tile = np.tile(self.input, (self.output_dim, 1))
-		W_grad = np.dot(self.gradOut, input_tile)
-		b_grad = np.dot(self.gradOut, np.identity(self.output_dim))
+		input_unbatched = self.__unbatch__(self.input)
+		gradOut_unbatched = self.__unbatch__(self.gradOut)
+		W_grad = []
+		b_grad = []
+		for i in range(len(gradOut_unbatched)):
+			W_grad.append(self.gradW(input_unbatched[i].reshape(-1),
+									 gradOut_unbatched[i].reshape(-1)))
+			b_grad.append(self.gradB(gradOut_unbatched[i].reshape(-1)))
+		W_grad = self.__batch__(W_grad)
+		b_grad = self.__batch__(b_grad)
 
 		self.W = solver.update(self.W, W_grad, id(self))
 		self.b = solver.update(self.b, b_grad, id(self)+1)
