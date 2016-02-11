@@ -8,7 +8,6 @@ This assignment implements a one hidden layer fully connected neural network in 
 
 ## Dependencies
 - Python 2
-- Python 3 (for converting dataset for Python 2 use)
 - pip (to install packages)
 - virtualenv (for setting up environments easily)
 
@@ -45,12 +44,12 @@ See requirements.txt for complete list.
 		hyperparameter.py		hyperparameter tuning
 		monitor.py			training monitoring
 	bootstrap.sh			Run first to set up environment
-	cifar_for_python2.py		convert cifar dataset for Python 2 compatibility
 	main.py				main script
+	module.py			abstract class for module
 ```
 
 ## Quick Start
-1. Download the cifar datset to this folder.
-2. Set up the python virtual environment and extract dataset using `./bootstrap.sh cifar-2class-py.zip` (this might take a while)
+1. Download the cifar dataset (Python 2 version!) to this folder.
+2. Set up the python virtual environment and extract dataset using `./bootstrap.sh cifar-2class-py2.zip` (this might take a while)
 3. Activate the virtual environment (`source venv/bin/activate`)
 4. Run `main.py` for training and test
