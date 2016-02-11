@@ -9,6 +9,7 @@ from loss.cross_entropy import CrossEntropyLoss
 from solver.easy_solver import EasySolver
 from solver.momentum_solver import MomentumSolver
 
+from util.monitor import Monitor
 from util.benchmark import Timer
 timer = Timer()
 
@@ -17,6 +18,11 @@ np.random.seed(13141)
 
 # debug mode
 debug_mode = False
+
+# experiment name
+experiment_name = "default"
+iter_log_file = "logs/{0}_iter_log.txt".format(experiment_name)
+epoch_log_file = "logs/{0}_epoch_log.txt".format(experiment_name)
 
 # load data
 print("Loading dataset...")
@@ -36,7 +42,7 @@ num_hidden_units = 50
 learning_rate = 0.001
 momentum_mu = 0.7
 mini_batch_size = 256
-num_epoch = 25 if not debug_mode else 1
+num_epoch = 50 if not debug_mode else 1
 
 # network
 net = Sequential(debug=debug_mode)
@@ -57,6 +63,9 @@ print("Loss function: {0}\n".format(loss))
 solver = MomentumSolver(lr=learning_rate, mu=momentum_mu)
 
 # training loop
+monitor = Monitor()
+monitor.createSession(iter_log_file, epoch_log_file)
+cum_iter = 0
 for epoch in range(num_epoch):
 	print("Training epoch {0}...".format(epoch))
 	timer.begin("epoch")
@@ -64,6 +73,8 @@ for epoch in range(num_epoch):
 	for iter, batch in enumerate(data.get_train_batches(mini_batch_size)):
 		if iter > 1 and debug_mode:
 			break
+
+		timer.begin("iter")
 
 		# get batch
 		(x, target) = batch
@@ -78,7 +89,6 @@ for epoch in range(num_epoch):
 		# loss
 		l = loss.forward(z, target)
 		l_avg = 1./batch_size*l.sum(2)[0,0]
-		print("\tloss: {0}".format(l_avg))
 		if debug_mode:
 			print("\tloss: {0}".format(l))
 			print("\tloss shape: {0}".format(l.shape))
@@ -98,15 +108,39 @@ for epoch in range(num_epoch):
 		# update parameters
 		net.updateParams(solver)
 
-	# evaluation
+		# timing
+		elapsed = timer.getElapsed("iter")
+		print("\tloss: {0}\telapsed: {1}".format(l_avg, elapsed))
+
+		# logging
+		monitor.recordIteration(cum_iter, l_avg, elapsed)
+		cum_iter += 1
+
+	# evaluation on test set
 	target = data.get_test_labels()
 	x = data.get_test_data()
 	batch_size = x.shape[2]
 
 	z = net.forward(x)
 	l = loss.forward(z, target)
-	l_avg = 1./batch_size*l.sum(2)[0,0]
-	print("Evaluation: {0}".format(l_avg))
+	l_test_avg = 1./batch_size*l.sum(2)[0,0]
+
+	# evaluation on training set
+	target = data.get_train_labels()
+	x = data.get_train_data()
+	batch_size = x.shape[2]
+
+	z = net.forward(x)
+	l = loss.forward(z, target)
+	l_train_avg = 1./batch_size*l.sum(2)[0,0]
+
+	print("Evaluation: test: {0}\ttrain: {1}".format(l_test_avg, l_train_avg))
 
 	# timing
-	print("Finished epoch {1} in {0:2f}s.".format(timer.getElapsed("dataset"), epoch))
+	elapsed = timer.getElapsed("epoch")
+	print("Finished epoch {1} in {0:2f}s.".format(elapsed, epoch))
+
+	# logging
+	monitor.recordEpoch(epoch, l_train_avg, l_test_avg, elapsed)
+
+monitor.finishSession()

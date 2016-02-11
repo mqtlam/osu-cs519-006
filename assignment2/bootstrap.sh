@@ -3,6 +3,7 @@
 readonly SCRIPT_NAME=$0
 readonly DATASET_FILE=$1
 
+readonly LOGS_DIR="logs"
 readonly VIRTUALENV_DIR="venv"
 # readonly VIRTUALENV_PYTHON3_DIR="venv3"
 readonly REQUIREMENTS_FILE="requirements.txt"
@@ -59,6 +60,10 @@ create_protcol2_dataset() {
 	python cifar_for_python2.py
 }
 
+create_logs_dir() {
+	mkdir -p $LOGS_DIR
+}
+
 main() {
 	reset_environment
 
@@ -89,6 +94,7 @@ main() {
 	echo
 	echo "[${SCRIPT_NAME}] Extracting dataset..."
 	setup_dataset
+	create_logs_dir
 
 	# echo
 	# echo "[${SCRIPT_NAME}] Converting dataset for Python 2..."
