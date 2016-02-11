@@ -10,6 +10,8 @@ from loss.cross_entropy import CrossEntropyLoss
 from solver.easy_solver import EasySolver
 from solver.momentum_solver import MomentumSolver
 
+from util.metrics import ErrorRate
+from util.metrics import Objective
 from util.monitor import Monitor
 from util.benchmark import Timer
 timer = Timer()
@@ -30,8 +32,6 @@ def main():
 	parser.add_argument('--mini_batch_size', type=int, help='mini batch size')
 	parser.add_argument('--num_epoch', type=int, help='number of epochs')
 	args = parser.parse_args()
-	import sys
-	sys.exit()
 
 	# experiment name
 	experiment_name = args.experiment_name
@@ -52,11 +52,11 @@ def main():
 	input_dim = data.get_data_dim()
 
 	# hyperparameters
-	num_hidden_units = 50 if args.num_hidden_units is None else args.num_hidden_units
-	learning_rate = 0.001 if args.learning_rate is None else args.learning_rate
-	momentum_mu = 0.7 if args.momentum_mu is None else args.momentum_mu
+	num_hidden_units = 100 if args.num_hidden_units is None else args.num_hidden_units
+	learning_rate = 0.01 if args.learning_rate is None else args.learning_rate
+	momentum_mu = 0.6 if args.momentum_mu is None else args.momentum_mu
 	mini_batch_size = 256 if args.mini_batch_size is None else args.mini_batch_size
-	num_epoch = (50 if not debug_mode else 1) if args.num_epoch is None else args.num_epoch
+	num_epoch = (1000 if not debug_mode else 1) if args.num_epoch is None else args.num_epoch
 
 	# network
 	net = Sequential(debug=debug_mode)
@@ -69,6 +69,11 @@ def main():
 
 	# loss
 	loss = CrossEntropyLoss()
+
+	# error metrics
+	training_objective = Objective(loss)
+	test_objective = Objective(loss)
+	errorRate = ErrorRate()
 
 	print("Loss function: {0}\n".format(loss))
 
@@ -101,9 +106,8 @@ def main():
 				print("\toutput shape: {0}".format(z.shape))
 
 			# loss
-			l = loss.forward(z, target)
-			l_avg = 1./batch_size*l.sum(2)[0,0]
 			if debug_mode:
+				l = loss.forward(z, target)
 				print("\tloss: {0}".format(l))
 				print("\tloss shape: {0}".format(l.shape))
 
@@ -122,40 +126,41 @@ def main():
 			# update parameters
 			net.updateParams(solver)
 
-			# timing
+			# metrics and timing
+			loss_avg = training_objective.compute(z, target)
 			elapsed = timer.getElapsed("iter")
-			print("\tloss: {0}\telapsed: {1}".format(l_avg, elapsed))
 
 			# logging
-			monitor.recordIteration(cum_iter, l_avg, elapsed)
+			print("\t[iter {0}]\tloss: {1}\telapsed: {2}".format(iter, loss_avg, elapsed))
+			monitor.recordIteration(cum_iter, loss_avg, elapsed)
+
 			cum_iter += 1
 
 		# evaluation on test set
 		target = data.get_test_labels()
 		x = data.get_test_data()
-		batch_size = x.shape[2]
-
-		z = net.forward(x)
-		l = loss.forward(z, target)
-		l_test_avg = 1./batch_size*l.sum(2)[0,0]
+		output = net.forward(x)
+		loss_avg_test = test_objective.compute(output, target)
+		error_rate_test = errorRate.compute(output, target)
 
 		# evaluation on training set
 		target = data.get_train_labels()
 		x = data.get_train_data()
-		batch_size = x.shape[2]
-
-		z = net.forward(x)
-		l = loss.forward(z, target)
-		l_train_avg = 1./batch_size*l.sum(2)[0,0]
-
-		print("Evaluation: test: {0}\ttrain: {1}".format(l_test_avg, l_train_avg))
+		output = net.forward(x)
+		loss_avg_train = training_objective.compute(output, target)
+		error_rate_train = errorRate.compute(output, target)
 
 		# timing
 		elapsed = timer.getElapsed("epoch")
-		print("Finished epoch {1} in {0:2f}s.".format(elapsed, epoch))
 
 		# logging
-		monitor.recordEpoch(epoch, l_train_avg, l_test_avg, elapsed)
+		print("End of epoch:\ttest objective: {0}\ttrain objective: {1}".format(loss_avg_test,
+												 								loss_avg_train))
+		print("\t\ttest error rate: {0}\ttrain error rate: {1}".format(error_rate_test,
+												 					   error_rate_train))
+		print("Finished epoch {1} in {0:2f}s.\n".format(elapsed, epoch))
+		monitor.recordEpoch(epoch, loss_avg_train, loss_avg_test,
+							error_rate_train, error_rate_test, elapsed)
 
 	monitor.finishSession()
 

@@ -5,11 +5,11 @@ import os
 SUBMIT_SCRIPT = "submit.csh"
 
 # variables
-num_hidden_units_list = [1000, 50, 100, 500, 3000, 5000]
+num_hidden_units_list = [100, 50, 500, 1000, 3000, 5000]
 learning_rate_list = [0.01, 0.001, 0.1, 0.5, 1.0]
 momentum_mu_list = [0.6, 0.2, 0.4, 0.8]
 mini_batch_size_list = [256, 1, 32, 64, 128]
-num_epoch = 100
+num_epoch = 1000
 
 def writeScript(name, argumentString):
     return """#!/bin/csh
