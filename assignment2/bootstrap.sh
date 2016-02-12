@@ -1,14 +1,22 @@
 #!/bin/bash
+# This script should be run first before everything else
+# to set up the virtual environment, dataset, folders, etc.
 
-readonly SCRIPT_NAME=$0
-readonly DATASET_FILE=$1
+# global constants:
 
+# where to look for the dataset after extracting from zip
 readonly CIFAR_DIR="cifar-2class-py2"
+# for logs generated from main.py
 readonly LOGS_DIR="logs"
+# for logs generated from cluster jobs (hyperparmameters.py)
 readonly JOBS_DIR="jobs"
+# virtual environment directory
 readonly VIRTUALENV_DIR="venv"
+# requirements file for generating a list of Python dependencies
 readonly REQUIREMENTS_FILE="requirements.txt"
 
+# check arguments
+readonly SCRIPT_NAME=$0
 usage() {
 	echo "usage: $SCRIPT_NAME /path/to/cifar-2class-py2.zip"
 	echo ""
@@ -23,22 +31,30 @@ if [ "$#" -ne 1 ]; then
 	exit 1
 fi
 
+# command line arguments
+readonly DATASET_FILE=$1
+
 reset_environment() {
+	# reset by deleting folders
 	rm -rf $CIFAR_DIR
 	rm -rf $VIRTUALENV_DIR
 }
 
 create_virtualenv() {
+	# create virtual environment
 	virtualenv --no-site-packages $VIRTUALENV_DIR
 }
 
 save_dependencies_list() {
+	# save the Python dependencies to a requirements file
+	# (not really useful except for knowing all the dependencies)
 	local $file=$0
 	rm -f $file
 	pip freeze > $file
 }
 
 install_dependencies() {
+	# install the Python dependencies using pip (inside virtual environment)
 	pip install argparse
 	pip install numpy
 	pip install scipy
@@ -48,24 +64,25 @@ install_dependencies() {
 }
 
 install_dependencies_from_requirements() {
+	# could just install from the requirements file
+	# instead of calling install_dependencies
 	pip install -r $REQUIREMENTS_FILE
 }
 
 setup_dataset() {
+	# set up the dataset by extracting the dataset zip file
 	unzip $DATASET_FILE
 	rm -rf __MACOSX
 }
 
-create_protcol2_dataset() {
-	python cifar_for_python2.py
-}
-
 create_dirs() {
+	# create logs and jobs empty directories
 	mkdir -p $LOGS_DIR
 	mkdir -p $JOBS_DIR
 }
 
 main() {
+	# main script
 	reset_environment
 
 	echo

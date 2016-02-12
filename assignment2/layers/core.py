@@ -2,6 +2,12 @@ from module import Module
 
 class Layer(Module):
 	"""Abstract Layer class.
+	
+	Assumes working with consistent data format
+	for all inputs and outputs:
+		mxnxb numpy array
+			b refers to batch
+			m,n are arbitrary
 	"""
 
 	def __init__(self):
