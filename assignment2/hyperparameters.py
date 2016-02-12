@@ -1,3 +1,4 @@
+import time
 from subprocess import call
 import os
 
@@ -5,11 +6,11 @@ import os
 SUBMIT_SCRIPT = "submit.csh"
 
 # variables
-num_hidden_units_list = [100, 50, 500, 1000, 3000, 5000]
+num_hidden_units_list = [50, 10, 25, 100, 250, 500]
 learning_rate_list = [0.01, 0.001, 0.1, 0.5, 1.0]
 momentum_mu_list = [0.6, 0.2, 0.4, 0.8]
 mini_batch_size_list = [256, 1, 32, 64, 128]
-num_epoch = 1000
+num_epoch = 500
 
 def writeScript(name, argumentString):
     return """#!/bin/csh
@@ -26,13 +27,16 @@ def writeScript(name, argumentString):
 #$ -j y
 
 # select queue
-#$ -q eecs,eecs2
+#$ -q eecs2
 
 # activate
 source venv/bin/activate.csh
 
 # see where the job is being run
 hostname
+
+# see which python is used
+which python
 
 # print date and time
 date
@@ -71,6 +75,9 @@ def launchJob(num_hidden_units, learning_rate,
 
     # launch job
     call(["qsub", SUBMIT_SCRIPT])
+    time.sleep(1)
+    if os.path.isfile(SUBMIT_SCRIPT):
+        os.remove(SUBMIT_SCRIPT)
 
 def main():
     # experiments for num of hidden units

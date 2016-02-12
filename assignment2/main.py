@@ -58,6 +58,13 @@ def main():
 	mini_batch_size = 256 if args.mini_batch_size is None else args.mini_batch_size
 	num_epoch = (1000 if not debug_mode else 1) if args.num_epoch is None else args.num_epoch
 
+	# print hyperparameters
+	print("num_hidden_units: {0}".format(num_hidden_units))
+	print("learning_rate: {0}".format(learning_rate))
+	print("momentum_mu: {0}".format(momentum_mu))
+	print("mini_batch_size: {0}".format(mini_batch_size))
+	print("num_epoch: {0}".format(num_epoch))
+
 	# network
 	net = Sequential(debug=debug_mode)
 	net.add( LinearLayer(input_dim, num_hidden_units) )
