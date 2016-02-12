@@ -5,6 +5,7 @@ readonly DATASET_FILE=$1
 
 readonly CIFAR_DIR="cifar-2class-py2"
 readonly LOGS_DIR="logs"
+readonly JOBS_DIR="jobs"
 readonly VIRTUALENV_DIR="venv"
 readonly REQUIREMENTS_FILE="requirements.txt"
 
@@ -59,8 +60,9 @@ create_protcol2_dataset() {
 	python cifar_for_python2.py
 }
 
-create_logs_dir() {
+create_dirs() {
 	mkdir -p $LOGS_DIR
+	mkdir -p $JOBS_DIR
 }
 
 main() {
@@ -83,7 +85,7 @@ main() {
 	echo
 	echo "[${SCRIPT_NAME}] Extracting dataset..."
 	setup_dataset
-	create_logs_dir
+	create_dirs
 
 	echo
 	echo "[${SCRIPT_NAME}] Done."

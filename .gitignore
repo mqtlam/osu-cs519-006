@@ -64,6 +64,7 @@ target/
 # Other
 assignment*/cifar-2class-py2
 assignment*/*venv*
+jobs/
 logs/
 *venv*
 *.swp
