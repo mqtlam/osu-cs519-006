@@ -1,3 +1,17 @@
+"""Main script for training and evaluating a neural network.
+Results will be stored in the logs folder.
+
+Usage: python main.py experiment_name
+	Can also set hyperparameters:
+		--num_hidden_units
+		--learning_rate
+		--momentum_mu
+		--mini_batch_size
+		--num_epoch
+
+Run 'python main.py -h for help'
+"""
+
 import numpy as np
 import argparse
 
@@ -7,9 +21,9 @@ from layers.linear import LinearLayer
 from network.sequential import Sequential
 from util.dataset import CifarDataset
 from loss.cross_entropy import CrossEntropyLoss
-from solver.easy_solver import EasySolver
 from solver.momentum_solver import MomentumSolver
 
+from util.debug import Debug
 from util.metrics import ErrorRate
 from util.metrics import Objective
 from util.monitor import Monitor
@@ -22,6 +36,7 @@ def main():
 
 	# debug mode
 	debug_mode = False
+	debug = Debug(debug_mode)
 
 	# parse arguments
 	parser = argparse.ArgumentParser(description='Train and test neural network on cifar dataset.')
@@ -85,7 +100,6 @@ def main():
 	print("Loss function: {0}\n".format(loss))
 
 	# solver
-	# solver = EasySolver(learning_rate)
 	solver = MomentumSolver(lr=learning_rate, mu=momentum_mu)
 
 	# training loop
@@ -108,27 +122,24 @@ def main():
 
 			# forward
 			z = net.forward(x)
-			if debug_mode:
-				print("\toutput: {0}".format(z))
-				print("\toutput shape: {0}".format(z.shape))
+			Debug.disp("\toutput: {0}".format(z))
+			Debug.disp("\toutput shape: {0}".format(z.shape))
 
 			# loss
 			if debug_mode:
 				l = loss.forward(z, target)
-				print("\tloss: {0}".format(l))
-				print("\tloss shape: {0}".format(l.shape))
+				Debug.disp("\tloss: {0}".format(l))
+				Debug.disp("\tloss shape: {0}".format(l.shape))
 
 			# backward loss
 			gradients = loss.backward(z, target)
-			if debug_mode:
-				print("\tgradients: {0}".format(gradients))
-				print("\tgradients shape: {0}".format(gradients.shape))
+			Debug.disp("\tgradients: {0}".format(gradients))
+			Debug.disp("\tgradients shape: {0}".format(gradients.shape))
 
 			# backward
 			grad_x = net.backward(x, gradients)
-			if debug_mode:
-				print("\tgrad_x: {0}".format(grad_x))
-				print("\tgrad_x: {0}".format(grad_x.shape))
+			Debug.disp("\tgrad_x: {0}".format(grad_x))
+			Debug.disp("\tgrad_x: {0}".format(grad_x.shape))
 
 			# update parameters
 			net.updateParams(solver)
