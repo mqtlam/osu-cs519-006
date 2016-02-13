@@ -36,7 +36,7 @@ def main():
 
 	# debug mode
 	debug_mode = False
-	debug = Debug(debug_mode)
+	dbg = Debug(debug_mode)
 
 	# parse arguments
 	parser = argparse.ArgumentParser(description='Train and test neural network on cifar dataset.')
@@ -122,24 +122,24 @@ def main():
 
 			# forward
 			z = net.forward(x)
-			Debug.disp("\toutput: {0}".format(z))
-			Debug.disp("\toutput shape: {0}".format(z.shape))
+			dbg.disp("\toutput: {0}".format(z))
+			dbg.disp("\toutput shape: {0}".format(z.shape))
 
 			# loss
 			if debug_mode:
 				l = loss.forward(z, target)
-				Debug.disp("\tloss: {0}".format(l))
-				Debug.disp("\tloss shape: {0}".format(l.shape))
+				dbg.disp("\tloss: {0}".format(l))
+				dbg.disp("\tloss shape: {0}".format(l.shape))
 
 			# backward loss
 			gradients = loss.backward(z, target)
-			Debug.disp("\tgradients: {0}".format(gradients))
-			Debug.disp("\tgradients shape: {0}".format(gradients.shape))
+			dbg.disp("\tgradients: {0}".format(gradients))
+			dbg.disp("\tgradients shape: {0}".format(gradients.shape))
 
 			# backward
 			grad_x = net.backward(x, gradients)
-			Debug.disp("\tgrad_x: {0}".format(grad_x))
-			Debug.disp("\tgrad_x: {0}".format(grad_x.shape))
+			dbg.disp("\tgrad_x: {0}".format(grad_x))
+			dbg.disp("\tgrad_x: {0}".format(grad_x.shape))
 
 			# update parameters
 			net.updateParams(solver)
