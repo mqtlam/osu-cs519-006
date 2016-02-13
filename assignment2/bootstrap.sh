@@ -10,6 +10,8 @@ readonly CIFAR_DIR="cifar-2class-py2"
 readonly LOGS_DIR="logs"
 # for logs generated from cluster jobs (hyperparmameters.py)
 readonly JOBS_DIR="jobs"
+# for figures generated from analyze_results.py
+readonly FIGURES_DIR="figures"
 # virtual environment directory
 readonly VIRTUALENV_DIR="venv"
 # requirements file for generating a list of Python dependencies
@@ -76,9 +78,10 @@ setup_dataset() {
 }
 
 create_dirs() {
-	# create logs and jobs empty directories
+	# create empty directories used later
 	mkdir -p $LOGS_DIR
 	mkdir -p $JOBS_DIR
+	mkdir -p $FIGURES_DIR
 }
 
 main() {

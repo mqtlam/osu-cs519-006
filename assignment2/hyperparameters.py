@@ -9,11 +9,11 @@ import os
 
 # SET UP HYPERPARAMETERS TO EXPERIMENT BELOW
 # The first element of the list will be used as a default value.
-num_hidden_units_list = [50, 10, 25, 100, 250, 500]
-learning_rate_list = [0.01, 0.001, 0.1, 0.5, 1.0]
-momentum_mu_list = [0.6, 0.0, 0.2, 0.4, 0.8]
+num_hidden_units_list = [50, 10, 25, 100, 200]
+learning_rate_list = [0.01, 0.001, 0.1]
+momentum_mu_list = [0, 0.2, 0.4, 0.6]
 mini_batch_size_list = [256, 1, 32, 64, 128]
-num_epoch = 500
+num_epoch = 250
 
 # constants
 SUBMIT_SCRIPT = "submit.csh"
