@@ -8,9 +8,9 @@ from util.plot import Plot
 # SET UP HYPERPARAMETERS TO EVALUATE BELOW
 # The first element of the list will be used as a default value.
 num_hidden_units_list = [50, 10, 25, 100, 200]
-learning_rate_list = [0.01, 0.001, 0.1]
+learning_rate_list = [0.01, 0.001, 0.005]
 momentum_mu_list = [0, 0.2, 0.4, 0.6]
-mini_batch_size_list = [256, 1, 32, 64, 128]
+mini_batch_size_list = [256, 32, 64, 128]
 
 def analyze(plt, num_hidden_units, learning_rate, momentum_mu, mini_batch_size):
     """Helper function.
@@ -48,8 +48,8 @@ def analyze_hidden_units(plt):
 
     var_title = "Number of Hidden Units"
     var_list = num_hidden_units_list
-    output_file = "figures/{0}_hiddenunits.png".format(experiment_name)
-    plt.plotTestAccuracy(self, var_title, var_list, input_file_list, output_file)
+    output_file = "figures/hiddenunits.png"
+    plt.plotTestAccuracy(var_title, var_list, input_file_list, output_file)
 
 def analyze_learning_rate(plt):
     """Analyze varying the learning rate
@@ -70,8 +70,8 @@ def analyze_learning_rate(plt):
 
     var_title = "Learning Rate"
     var_list = learning_rate_list
-    output_file = "figures/{0}_learningrate.png".format(experiment_name)
-    plt.plotTestAccuracy(self, var_title, var_list, input_file_list, output_file)
+    output_file = "figures/learningrate.png"
+    plt.plotTestAccuracy(var_title, var_list, input_file_list, output_file)
 
 def analyze_momentum(plt):
     """Analyze varying the momentum mu
@@ -92,8 +92,8 @@ def analyze_momentum(plt):
 
     var_title = "Momentum"
     var_list = momentum_mu_list
-    output_file = "figures/{0}_momentum.png".format(experiment_name)
-    plt.plotTestAccuracy(self, var_title, var_list, input_file_list, output_file)
+    output_file = "figures/momentum.png"
+    plt.plotTestAccuracy(var_title, var_list, input_file_list, output_file)
 
 def analyze_batch_size(plt):
     """Analyze varying the batch size
@@ -107,15 +107,15 @@ def analyze_batch_size(plt):
         # use defaults for other variables
         num_hidden_units = num_hidden_units_list[0]
         learning_rate = learning_rate_list[0]
-        num_hidden_units = num_hidden_units_list[0]
+        momentum_mu = momentum_mu_list[0]
 
         experiment_name = analyze(plt, num_hidden_units, learning_rate, momentum_mu, mini_batch_size)
         input_file_list.append("logs/{0}_epoch_log.txt".format(experiment_name))
 
     var_title = "Mini Batch Size"
     var_list = mini_batch_size_list
-    output_file = "figures/{0}_batchsize.png".format(experiment_name)
-    plt.plotTestAccuracy(self, var_title, var_list, input_file_list, output_file)
+    output_file = "figures/batchsize.png"
+    plt.plotTestAccuracy(var_title, var_list, input_file_list, output_file)
 
 def main():
     plt = Plot()

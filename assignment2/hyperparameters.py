@@ -11,10 +11,10 @@ import os
 # SET UP HYPERPARAMETERS TO EXPERIMENT BELOW
 # The first element of the list will be used as a default value.
 num_hidden_units_list = [50, 10, 25, 100, 200]
-learning_rate_list = [0.01, 0.001, 0.1]
+learning_rate_list = [0.01, 0.001, 0.005]
 momentum_mu_list = [0, 0.2, 0.4, 0.6]
-mini_batch_size_list = [256, 1, 32, 64, 128]
-num_epoch = 250
+mini_batch_size_list = [256, 32, 64, 128]
+num_epoch = 300
 
 # constants
 SUBMIT_SCRIPT = "submit.csh"
@@ -129,6 +129,9 @@ def learning_rate_experiment():
     while fixing the other hyperparameters.
     """
     for learning_rate in learning_rate_list:
+        if learning_rate == learning_rate_list[0]:
+            continue
+
         # use defaults for other variables
         num_hidden_units = num_hidden_units_list[0]
         momentum_mu = momentum_mu_list[0]
@@ -145,6 +148,9 @@ def momentum_experiment():
     while fixing the other hyperparameters.
     """
     for momentum_mu in momentum_mu_list:
+        if momentum_mu == momentum_mu_list[0]:
+            continue
+
         # use defaults for other variables
         num_hidden_units = num_hidden_units_list[0]
         learning_rate = learning_rate_list[0]
@@ -161,6 +167,9 @@ def batch_size_experiment():
     while fixing the other hyperparameters.
     """
     for mini_batch_size in mini_batch_size_list:
+        if mini_batch_size == mini_batch_size_list[0]:
+            continue
+
         # use defaults for other variables
         num_hidden_units = num_hidden_units_list[0]
         learning_rate = learning_rate_list[0]

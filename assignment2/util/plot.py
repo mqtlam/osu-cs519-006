@@ -146,24 +146,19 @@ class Plot:
             # load data
             try:
                 data = np.loadtxt(input_file)
-            except:
-                print("error loading {0}".format(input_file))
-                return
-
-            try:
                 test_objective_data = data[:, Plot.E_TEST_ERROR_RATE_INDEX]
             except:
                 print("error reading {0}".format(input_file))
-                return
-
-            y[index] = 1.0-np.min(test_objective_data)
+                y[index] = 0
+            else:
+                y[index] = 1.0-np.min(test_objective_data)
 
         # plot data
         plt.plot(x, y,
                  color="blue", linewidth=2.5, linestyle="-", marker="o")
         plt.xlabel("{0}".format(var_title))
         plt.ylabel("Test Accuracy")
-        plt.title("Test Accuracy vs. {0}}".format(var_title))
+        plt.title("Test Accuracy vs. {0}".format(var_title))
 
         # save figure
         self.__saveFigure__(output_file)
