@@ -130,3 +130,40 @@ class Plot:
 
         # save figure
         self.__saveFigure__(output_file)
+
+    def plotTestAccuracy(self, var_title, var_list, input_file_list, output_file):
+        """Plot the test accuracy versus a variable.
+
+        Args:
+            var_title: string of what the variable is
+            var_list: list of values for a variable
+            input_file: corresponding file containing text data (written from Monitor)
+            output_file: png file to save figure
+        """
+        x = np.array(var_list)
+        y = np.zeros(len(var_list))
+        for index, input_file in enumerate(input_file_list):
+            # load data
+            try:
+                data = np.loadtxt(input_file)
+            except:
+                print("error loading {0}".format(input_file))
+                return
+
+            try:
+                test_objective_data = data[:, Plot.E_TEST_ERROR_RATE_INDEX]
+            except:
+                print("error reading {0}".format(input_file))
+                return
+
+            y[index] = 1.0-np.min(test_objective_data)
+
+        # plot data
+        plt.plot(x, y,
+                 color="blue", linewidth=2.5, linestyle="-", marker="o")
+        plt.xlabel("{0}".format(var_title))
+        plt.ylabel("Test Accuracy")
+        plt.title("Test Accuracy vs. {0}}".format(var_title))
+
+        # save figure
+        self.__saveFigure__(output_file)
