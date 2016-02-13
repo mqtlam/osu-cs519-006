@@ -56,6 +56,8 @@ See requirements.txt for complete list.
 		hyperparameter.py - hyperparameter tuning
 		metrics.py - metrics for evaluation
 		monitor.py - training monitoring
+		plot.py - plot loss graphs and more
+	analyze_results.py - analyze results after running hyperparameter.py
 	bootstrap.sh - run first to set up environment
 	hyperparameter.sh - run multiple experiments for tuning hyperparameters
 	main.py - main script

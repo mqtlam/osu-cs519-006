@@ -1,3 +1,4 @@
+#!/usr/bin/env python
 """This script launches multiple hyperparameter experiments
 in parallel. It uses the HPC cluster for launching jobs.
 This is useful for experimenting different hyperparameters.
