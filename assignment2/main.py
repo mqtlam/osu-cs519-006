@@ -67,11 +67,11 @@ def main():
 	input_dim = data.get_data_dim()
 
 	# hyperparameters
-	num_hidden_units = 100 if args.num_hidden_units is None else args.num_hidden_units
+	num_hidden_units = 50 if args.num_hidden_units is None else args.num_hidden_units
 	learning_rate = 0.01 if args.learning_rate is None else args.learning_rate
 	momentum_mu = 0.6 if args.momentum_mu is None else args.momentum_mu
-	mini_batch_size = 256 if args.mini_batch_size is None else args.mini_batch_size
-	num_epoch = (1000 if not debug_mode else 1) if args.num_epoch is None else args.num_epoch
+	mini_batch_size = 64 if args.mini_batch_size is None else args.mini_batch_size
+	num_epoch = (500 if not debug_mode else 1) if args.num_epoch is None else args.num_epoch
 
 	# print hyperparameters
 	print("num_hidden_units: {0}".format(num_hidden_units))
